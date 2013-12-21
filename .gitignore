@@ -1,0 +1,7 @@
+/share/
+/bin/
+/local/
+/include/
+/lib/
+*.py[oc]
+*.sw[po]
