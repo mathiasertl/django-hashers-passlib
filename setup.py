@@ -45,17 +45,23 @@ class clean(_clean):
 
 class test(Command):
     description = 'Run test suite.'
-    user_options = []
+    user_options = [
+        (str('algo='), None, 'Only test the specified algorithm'),
+    ]
 
     def initialize_options(self):
-        pass
+        self.algo = None
 
     def finalize_options(self):
         pass
 
     def run(self):
         loader = unittest.TestLoader()
-        suite = loader.loadTestsFromModule(test_hashers)
+        if self.algo is None:
+            suite = loader.loadTestsFromModule(test_hashers)
+        else:
+            case = getattr(test_hashers, '%s_test' % self.algo)
+            suite = loader.loadTestsFromTestCase(case)
         unittest.TextTestRunner(verbosity=1).run(suite)
 
 setup(
