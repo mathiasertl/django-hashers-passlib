@@ -5,3 +5,4 @@
 /lib/
 *.py[oc]
 *.sw[po]
+/example/
