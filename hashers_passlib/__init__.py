@@ -58,6 +58,24 @@ class ModularCryptHasher(PasslibHasher):
         return '$%s' % hash
 
 
+class RenamedModularCryptHasher(PasslibHasher):
+    def verify(self, password, encoded):
+        _algo, hash = encoded.split('$', 1)
+        encoded = '$%s$%s' % (self.orig_scheme, hash)
+        return self.hasher.verify(password, encoded)
+
+    def encode(self, password, salt=None):
+        encrypted = self.hasher.encrypt(password, salt=salt)
+        encoded = encrypted.lstrip('$').split('$', 1)[1]
+        return '%s$%s' % (self.algorithm, encoded)
+
+    def from_orig(self, hash):
+        return '%s$%s' % (self.algorithm, hash.lstrip('$').split('$', 1)[1])
+
+    def to_orig(self, hash):
+        return '$%s$%s' % (self.orig_scheme, hash.split('$', 1)[1])
+
+
 class PrefixedHasher(PasslibHasher):
     def verify(self, password, encoded):
         _algo, hash = encoded.split('$', 1)
@@ -92,3 +110,7 @@ class crypt16(PrefixedHasher):
 
 class md5_crypt(PrefixedHasher):
     pass
+
+
+class sha1_crypt(RenamedModularCryptHasher):
+    orig_scheme = 'sha1'
