@@ -51,6 +51,12 @@ class ModularCryptHasher(PasslibHasher):
     def encode(self, password, salt=None):
         return self.hasher.encrypt(password, salt=salt)[1:]
 
+    def from_orig(self, hash):
+        return hash.lstrip('$')
+
+    def to_orig(self, hash):
+        return '$%s' % hash
+
 
 class PrefixedHasher(PasslibHasher):
     def verify(self, password, encoded):
@@ -60,6 +66,12 @@ class PrefixedHasher(PasslibHasher):
     def encode(self, password, salt):
         encoded = self.hasher.encrypt(password)
         return '%s$%s' % (self.algorithm, encoded)
+
+    def from_orig(self, hash):
+        return '%s$%s' % (self.algorithm, hash)
+
+    def to_orig(self, hash):
+        return hash.split('$', 1)[1]
 
 
 class des_crypt(PrefixedHasher):

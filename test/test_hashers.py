@@ -67,6 +67,15 @@ class TestMixin(object):
                 encoded = make_password(password)
                 self.assertTrue(check_password(password, encoded))
 
+                # export again
+                encoded_orig = self.hasher.to_orig(encoded)
+                self.assertTrue(self.hasher.hasher.verify(password, encoded_orig))
+
+                # create and import hash
+                encoded_orig = self.hasher.hasher.encrypt(password)
+                encoded = self.hasher.from_orig(encoded_orig)
+                self.assertTrue(check_password(password, encoded))
+
 
 class des_crypt_test(TestCase, TestMixin):
     hasher = hashers_passlib.des_crypt()
