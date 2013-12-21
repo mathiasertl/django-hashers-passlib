@@ -26,6 +26,7 @@ class PasslibHasher(BasePasswordHasher):
     library = "passlib.hash"
     _hasher = None
     _algorithm = None
+    hasher_name = None
 
     def salt(self):
         """Just return None, passlib handles salt-generation."""
@@ -39,8 +40,11 @@ class PasslibHasher(BasePasswordHasher):
 
     @property
     def hasher(self):
+        if self.hasher_name is None:
+            self.hasher_name = self.__class__.__name__
+
         if self._hasher is None:
-            self._hasher = getattr(self._load_library(), self.algorithm)
+            self._hasher = getattr(self._load_library(), self.hasher_name)
         return self._hasher
 
     def verify(self, password, encoded):
@@ -65,6 +69,12 @@ class RenamedModularCryptHasher(PasslibHasher):
     def to_orig(self, hash):
         return '$%s$%s' % (self.orig_scheme, hash.split('$', 1)[1])
 
+class PrefixedModularCryptHasher(PasslibHasher):
+    def from_orig(self, encrypted):
+        return '%s%s' % (self.algorithm, encrypted)
+
+    def to_orig(self, encoded):
+        return '$%s' % encoded.split('$', 1)[1]
 
 class PrefixedHasher(PasslibHasher):
     def from_orig(self, hash):
@@ -98,9 +108,21 @@ class sha1_crypt(RenamedModularCryptHasher):
     orig_scheme = 'sha1'
 
 
-class sun_md5_crypt(PasslibHasher):
-    def from_orig(self, encrypted):
-        return '%s%s' % (self.algorithm, encrypted)
+class sun_md5_crypt(PrefixedModularCryptHasher):
+    pass
 
-    def to_orig(self, encoded):
-        return '$%s' % encoded.split('$', 1)[1]
+
+class sha256_crypt(RenamedModularCryptHasher):
+    orig_scheme = '5'
+
+
+class sha512_crypt(RenamedModularCryptHasher):
+    orig_scheme = '6'
+
+
+class apr_md5_crypt(ModularCryptHasher):
+    algorithm = 'apr1'
+
+
+class phpass(PrefixedModularCryptHasher):
+    pass

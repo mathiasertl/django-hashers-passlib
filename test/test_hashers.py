@@ -103,3 +103,19 @@ class sha1_crypt_test(TestCase, TestMixin):
 
 class sun_md5_crypt_test(TestCase, TestMixin):
     hasher = hashers_passlib.sun_md5_crypt()
+
+
+class sha256_crypt_test(TestCase, TestMixin):
+    hasher = hashers_passlib.sha256_crypt()
+
+
+class sha512_crypt_test(TestCase, TestMixin):
+    hasher = hashers_passlib.sha512_crypt()
+
+
+class apr_md5_crypt_test(TestCase, TestMixin):
+    hasher = hashers_passlib.apr_md5_crypt()
+
+
+class phpass_test(TestCase, TestMixin):
+    hasher = hashers_passlib.phpass()
