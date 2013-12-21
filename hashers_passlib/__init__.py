@@ -43,14 +43,14 @@ class PasslibHasher(BasePasswordHasher):
             self._hasher = getattr(self._load_library(), self.algorithm)
         return self._hasher
 
-
-class ModularCryptHasher(PasslibHasher):
     def verify(self, password, encoded):
-        return self.hasher.verify(password, '$%s' % encoded)
+        return self.hasher.verify(password, self.to_orig(encoded))
 
     def encode(self, password, salt=None):
-        return self.hasher.encrypt(password, salt=salt)[1:]
+        return self.from_orig(self.hasher.encrypt(password, salt=salt))
 
+
+class ModularCryptHasher(PasslibHasher):
     def from_orig(self, hash):
         return hash.lstrip('$')
 
@@ -59,12 +59,6 @@ class ModularCryptHasher(PasslibHasher):
 
 
 class RenamedModularCryptHasher(PasslibHasher):
-    def verify(self, password, encoded):
-        return self.hasher.verify(password, self.to_orig(encoded))
-
-    def encode(self, password, salt=None):
-        return self.from_orig(self.hasher.encrypt(password, salt=salt))
-
     def from_orig(self, hash):
         return '%s$%s' % (self.algorithm, hash.lstrip('$').split('$', 1)[1])
 
@@ -73,14 +67,6 @@ class RenamedModularCryptHasher(PasslibHasher):
 
 
 class PrefixedHasher(PasslibHasher):
-    def verify(self, password, encoded):
-        _algo, hash = encoded.split('$', 1)
-        return self.hasher.verify(password, hash)
-
-    def encode(self, password, salt):
-        encoded = self.hasher.encrypt(password)
-        return '%s$%s' % (self.algorithm, encoded)
-
     def from_orig(self, hash):
         return '%s$%s' % (self.algorithm, hash)
 
@@ -113,13 +99,6 @@ class sha1_crypt(RenamedModularCryptHasher):
 
 
 class sun_md5_crypt(PasslibHasher):
-    def verify(self, password, encoded):
-        return self.hasher.verify(password, self.to_orig(encoded))
-
-    def encode(self, password, salt=None):
-        encrypted = self.hasher.encrypt(password, salt=salt)
-        return self.from_orig(encrypted)
-
     def from_orig(self, encrypted):
         return '%s%s' % (self.algorithm, encrypted)
 
