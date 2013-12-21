@@ -25,16 +25,22 @@ class PasslibHasher(BasePasswordHasher):
     """Base class for all passlib-based hashers."""
     library = "passlib.hash"
     _hasher = None
+    _algorithm = None
 
     def salt(self):
         """Just return None, passlib handles salt-generation."""
         return None
 
     @property
+    def algorithm(self):
+        if self._algorithm is None:
+            self._algorithm = self.__class__.__name__
+        return self._algorithm
+
+    @property
     def hasher(self):
         if self._hasher is None:
-            name = getattr(self, 'name', self.__class__.__name__)
-            self._hasher = getattr(self._load_library(), name)
+            self._hasher = getattr(self._load_library(), self.algorithm)
         return self._hasher
 
 
@@ -73,8 +79,4 @@ class crypt16(PrefixedHasher):
 
 
 class md5_crypt(PrefixedHasher):
-    pass
-
-
-class bcrypt(PrefixedHasher):
     pass
