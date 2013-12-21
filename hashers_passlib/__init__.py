@@ -60,14 +60,10 @@ class ModularCryptHasher(PasslibHasher):
 
 class RenamedModularCryptHasher(PasslibHasher):
     def verify(self, password, encoded):
-        _algo, hash = encoded.split('$', 1)
-        encoded = '$%s$%s' % (self.orig_scheme, hash)
-        return self.hasher.verify(password, encoded)
+        return self.hasher.verify(password, self.to_orig(encoded))
 
     def encode(self, password, salt=None):
-        encrypted = self.hasher.encrypt(password, salt=salt)
-        encoded = encrypted.lstrip('$').split('$', 1)[1]
-        return '%s$%s' % (self.algorithm, encoded)
+        return self.from_orig(self.hasher.encrypt(password, salt=salt))
 
     def from_orig(self, hash):
         return '%s$%s' % (self.algorithm, hash.lstrip('$').split('$', 1)[1])
