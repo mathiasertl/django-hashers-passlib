@@ -114,3 +114,18 @@ class md5_crypt(PrefixedHasher):
 
 class sha1_crypt(RenamedModularCryptHasher):
     orig_scheme = 'sha1'
+
+
+class sun_md5_crypt(PasslibHasher):
+    def verify(self, password, encoded):
+        return self.hasher.verify(password, self.to_orig(encoded))
+
+    def encode(self, password, salt=None):
+        encrypted = self.hasher.encrypt(password, salt=salt)
+        return self.from_orig(encrypted)
+
+    def from_orig(self, encrypted):
+        return '%s%s' % (self.algorithm, encrypted)
+
+    def to_orig(self, encoded):
+        return '$%s' % encoded.split('$', 1)[1]

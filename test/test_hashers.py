@@ -99,3 +99,7 @@ class md5_crypt_test(TestCase, TestMixin):
 
 class sha1_crypt_test(TestCase, TestMixin):
     hasher = hashers_passlib.sha1_crypt()
+
+
+class sun_md5_crypt_test(TestCase, TestMixin):
+    hasher = hashers_passlib.sun_md5_crypt()
