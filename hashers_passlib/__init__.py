@@ -84,6 +84,11 @@ class PrefixedHasher(PasslibHasher):
         return hash.split('$', 1)[1]
 
 
+class PrefixedNoArgsHasher(PrefixedHasher):
+    def encode(self, password, salt=None):
+        return self.from_orig(self.hasher.encrypt(password))
+
+
 class des_crypt(PrefixedHasher):
     pass
 
@@ -137,4 +142,88 @@ class dlitz_pbkdf2_sha1(PrefixedModularCryptHasher):
 
 
 class scram(ModularCryptHasher):
+    pass
+
+
+class ldap_md5(PrefixedNoArgsHasher):
+    pass
+
+
+class ldap_sha1(PrefixedNoArgsHasher):
+    pass
+
+
+class ldap_salted_md5(PrefixedHasher):
+    pass
+
+
+class ldap_salted_sha1(PrefixedHasher):
+    pass
+
+
+class ldap_hex_md5(PrefixedNoArgsHasher):
+    pass
+
+
+class ldap_hex_sha1(PrefixedNoArgsHasher):
+    pass
+
+
+class atlassian_pbkdf2_sha1(PrefixedHasher):
+    pass
+
+
+class fshp(PrefixedHasher):
+    pass
+
+
+class mssql2000(PrefixedHasher):
+    pass
+
+
+class mssql2005(PrefixedHasher):
+    pass
+
+
+class mysql323(PrefixedNoArgsHasher):
+    pass
+
+
+class mysql41(PrefixedNoArgsHasher):
+    pass
+
+
+class oracle11(PrefixedHasher):
+    pass
+
+
+class lmhash(PrefixedNoArgsHasher):
+    pass
+
+
+class nthash(PrefixedNoArgsHasher):
+    pass
+
+
+class cisco_pix(PrefixedNoArgsHasher):
+    pass
+
+
+class cisco_type7(PrefixedHasher):
+    pass
+
+
+class grub_pbkdf2_sha512(PrefixedHasher):
+    pass
+
+
+class hex_md4(PrefixedNoArgsHasher):
+    pass
+
+
+class hex_sha256(PrefixedNoArgsHasher):
+    pass
+
+
+class hex_sha512(PrefixedNoArgsHasher):
     pass

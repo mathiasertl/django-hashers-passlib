@@ -39,18 +39,18 @@ PASSWORDS = [
     'THxn',
     '1uzPU',
     'oe331f',
-    'qBcP47',
-    'D4i19w',
-    'e8qBbIA',
-    'vzCXzq8',
-    '7xEmLNYW',
-    'HeVCzQ3I',
-    'mMIJzMuAo',
-    '4gjjrcCfm',
-    '3Asa788x6g',
-    'AGwKzVP1SC',
-    'CWwYP880G4',
-    'RK8SMEmv0s',
+#    'qBcP47',
+#    'D4i19w',
+#    'e8qBbIA',
+#    'vzCXzq8',
+#    '7xEmLNYW',
+#    'HeVCzQ3I',
+#    'mMIJzMuAo',
+#    '4gjjrcCfm',
+#    '3Asa788x6g',
+#    'AGwKzVP1SC',
+#    'CWwYP880G4',
+#    'RK8SMEmv0s',
 ]
 
 class TestMixin(object):
@@ -130,3 +130,87 @@ class dlitz_pbkdf2_sha1_test(TestCase, TestMixin):
 
 class scram_test(TestCase, TestMixin):
     hasher = hashers_passlib.scram()
+
+
+class ldap_md5_test(TestCase, TestMixin):
+    hasher = hashers_passlib.ldap_md5()
+
+
+class ldap_sha1_test(TestCase, TestMixin):
+    hasher = hashers_passlib.ldap_sha1()
+
+
+class ldap_salted_md5_test(TestCase, TestMixin):
+    hasher = hashers_passlib.ldap_salted_md5()
+
+
+class ldap_salted_sha1_test(TestCase, TestMixin):
+    hasher = hashers_passlib.ldap_salted_sha1()
+
+
+class ldap_hex_md5_test(TestCase, TestMixin):
+    hasher = hashers_passlib.ldap_hex_md5()
+
+
+class ldap_hex_sha1_test(TestCase, TestMixin):
+    hasher = hashers_passlib.ldap_hex_sha1()
+
+
+class atlassian_pbkdf2_sha1_test(TestCase, TestMixin):
+    hasher = hashers_passlib.atlassian_pbkdf2_sha1()
+
+
+class fshp_test(TestCase, TestMixin):
+    hasher = hashers_passlib.fshp()
+
+
+class mssql2000_test(TestCase, TestMixin):
+    hasher = hashers_passlib.mssql2000()
+
+
+class mssql2005_test(TestCase, TestMixin):
+    hasher = hashers_passlib.mssql2005()
+
+
+class mysql323_test(TestCase, TestMixin):
+    hasher = hashers_passlib.mysql323()
+
+
+class mysql41_test(TestCase, TestMixin):
+    hasher = hashers_passlib.mysql41()
+
+
+class oracle11_test(TestCase, TestMixin):
+    hasher = hashers_passlib.oracle11()
+
+
+class lmhash_test(TestCase, TestMixin):
+    hasher = hashers_passlib.lmhash()
+
+
+class nthash_test(TestCase, TestMixin):
+    hasher = hashers_passlib.nthash()
+
+
+class cisco_pix_test(TestCase, TestMixin):
+    hasher = hashers_passlib.cisco_pix()
+
+
+class cisco_type7_test(TestCase, TestMixin):
+    hasher = hashers_passlib.cisco_type7()
+
+
+class grub_pbkdf2_sha512_test(TestCase, TestMixin):
+    hasher = hashers_passlib.grub_pbkdf2_sha512()
+
+
+class hex_md4_test(TestCase, TestMixin):
+    hasher = hashers_passlib.hex_md4()
+
+
+class hex_sha256_test(TestCase, TestMixin):
+    hasher = hashers_passlib.hex_sha256()
+
+
+class hex_sha512_test(TestCase, TestMixin):
+    hasher = hashers_passlib.hex_sha512()
