@@ -39,18 +39,18 @@ PASSWORDS = [
     'THxn',
     '1uzPU',
     'oe331f',
-#    'qBcP47',
-#    'D4i19w',
-#    'e8qBbIA',
-#    'vzCXzq8',
-#    '7xEmLNYW',
-#    'HeVCzQ3I',
-#    'mMIJzMuAo',
-#    '4gjjrcCfm',
-#    '3Asa788x6g',
-#    'AGwKzVP1SC',
-#    'CWwYP880G4',
-#    'RK8SMEmv0s',
+    'qBcP47',
+    'D4i19w',
+    'e8qBbIA',
+    'vzCXzq8',
+    '7xEmLNYW',
+    'HeVCzQ3I',
+    'mMIJzMuAo',
+    '4gjjrcCfm',
+    '3Asa788x6g',
+    'AGwKzVP1SC',
+    'CWwYP880G4',
+    'RK8SMEmv0s',
 ]
 
 class TestMixin(object):
@@ -58,7 +58,7 @@ class TestMixin(object):
     def path(self):
         return '%s.%s' % (self.hasher.__module__, self.hasher.__class__.__name__)
 
-    def test_basic(self):
+    def test_check(self):
         with self.settings(PASSWORD_HASHERS=[self.path, ]):
             load_hashers(settings.PASSWORD_HASHERS)
 
@@ -66,10 +66,15 @@ class TestMixin(object):
                 encoded = make_password(password)
                 self.assertTrue(check_password(password, encoded))
 
-                # export again
+                # test to_orig, done here, to save a few hash-generations
                 encoded_orig = self.hasher.to_orig(encoded)
                 self.assertTrue(self.hasher.hasher.verify(password, encoded_orig))
 
+    def test_from_orig(self):
+        with self.settings(PASSWORD_HASHERS=[self.path, ]):
+            load_hashers(settings.PASSWORD_HASHERS)
+
+            for password in PASSWORDS:
                 # create and import hash
                 encoded_orig = self.hasher.hasher.encrypt(password)
                 encoded = self.hasher.from_orig(encoded_orig)
