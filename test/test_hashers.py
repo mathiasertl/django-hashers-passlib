@@ -20,7 +20,6 @@ from __future__ import unicode_literals
 
 import os
 import sys
-import unittest
 
 sys.path.insert(0, 'example')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'example.settings'
