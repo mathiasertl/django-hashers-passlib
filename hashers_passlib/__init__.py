@@ -126,3 +126,15 @@ class apr_md5_crypt(ModularCryptHasher):
 
 class phpass(PrefixedModularCryptHasher):
     pass
+
+
+class cta_pbkdf2_sha1(PrefixedModularCryptHasher):
+    pass
+
+
+class dlitz_pbkdf2_sha1(PrefixedModularCryptHasher):
+    pass
+
+
+class scram(ModularCryptHasher):
+    pass

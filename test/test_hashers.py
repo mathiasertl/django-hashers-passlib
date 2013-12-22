@@ -118,3 +118,15 @@ class apr_md5_crypt_test(TestCase, TestMixin):
 
 class phpass_test(TestCase, TestMixin):
     hasher = hashers_passlib.phpass()
+
+
+class cta_pbkdf2_sha1_test(TestCase, TestMixin):
+    hasher = hashers_passlib.cta_pbkdf2_sha1()
+
+
+class dlitz_pbkdf2_sha1_test(TestCase, TestMixin):
+    hasher = hashers_passlib.dlitz_pbkdf2_sha1()
+
+
+class scram_test(TestCase, TestMixin):
+    hasher = hashers_passlib.scram()
