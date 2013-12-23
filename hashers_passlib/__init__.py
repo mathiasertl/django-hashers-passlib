@@ -23,6 +23,7 @@ from django.contrib.auth.hashers import BasePasswordHasher
 
 class PasslibHasher(BasePasswordHasher):
     """Base class for all passlib-based hashers."""
+
     library = "passlib.hash"
     _hasher = None
     _algorithm = None
@@ -55,6 +56,11 @@ class PasslibHasher(BasePasswordHasher):
 
 
 class ModularCryptHasher(PasslibHasher):
+    """Base class for modular crypt schemes.
+
+    Hashes generated/understood by this hasher look exactly like the original
+    scheme except that the leading ``$`` is stripped.
+    """
     def from_orig(self, hash):
         return hash.lstrip('$')
 
@@ -63,6 +69,14 @@ class ModularCryptHasher(PasslibHasher):
 
 
 class RenamedModularCryptHasher(PasslibHasher):
+    """Base class for modular crypt schemes where either the scheme name
+    collides with a different scheme or the scheme is just a short number,
+    making collisions with future hash schemes likely.
+
+    Hashes generated/understood by this hasher look like the original hash
+    but the leading ``$scheme`` is replaced by just ``new-name`` (without the
+    leading ``$`` sign).
+    """
     def from_orig(self, hash):
         return '%s$%s' % (self.algorithm, hash.lstrip('$').split('$', 1)[1])
 
@@ -70,6 +84,9 @@ class RenamedModularCryptHasher(PasslibHasher):
         return '$%s$%s' % (self.orig_scheme, hash.split('$', 1)[1])
 
 class PrefixedModularCryptHasher(PasslibHasher):
+    """Similar to the :py:class:`RenamedModularCryptHasher`, but prefixes
+    a hash with the name of the algorithm.
+    """
     def from_orig(self, encrypted):
         return '%s%s' % (self.algorithm, encrypted)
 
@@ -77,6 +94,9 @@ class PrefixedModularCryptHasher(PasslibHasher):
         return '$%s' % encoded.split('$', 1)[1]
 
 class PrefixedHasher(PasslibHasher):
+    """Base class for all schemes that are not modular crypt schemes. The
+    original hash is prefixed with the algorithm and a ``$``.
+    """
     def from_orig(self, hash):
         return '%s$%s' % (self.algorithm, hash)
 
@@ -85,6 +105,7 @@ class PrefixedHasher(PasslibHasher):
 
 
 class PrefixedNoArgsHasher(PrefixedHasher):
+    """Same as the PrefixedHasher but does not pass a salt."""
     def encode(self, password, salt=None):
         return self.from_orig(self.hasher.encrypt(password))
 
