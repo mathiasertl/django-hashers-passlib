@@ -101,6 +101,9 @@ Algorithm | Notes
 [atlassian_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.atlassian_pbkdf2_sha1.html) | Prefixed with `atlassian_pbkdf2_sha1`.
 [fshp](https://pythonhosted.org/passlib/lib/passlib.hash.fshp.html) | Prefixed with `fshp$`.
 
+Hashes supported via conversion
+-------------------------------
+
 Some hash schemes really are just a minor transformation of a different hash
 scheme. For example, the
 [bsd_nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.bsd_nthash)
@@ -147,6 +150,15 @@ can be used to convert from and to the original scheme:
 From | To | Notes
 --- | --- | ---
 [bsd_nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.bsd_nthash) | [nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.nthash) | Convert from bsd_nthash to nthash and vice versa.
+
+Unsupported hashes
+------------------
+
+Some hashes are unsupported:
+
+Hash | Reason
+--- | ---
+[msdcc](https://pythonhosted.org/passlib/lib/passlib.hash.msdcc.html) | Scheme requires a username to generate a salt.
 
 How it works internally
 -----------------------
