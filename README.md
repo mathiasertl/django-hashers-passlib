@@ -1,11 +1,103 @@
 `django-hashers-passlib` aims to make password hashing schemes provided by
 [passlib](https://pythonhosted.org/passlib/) usable in
-[Django](https://www.djangoproject.com/). It provides standard Django password
-hashers that dynamically prefix the hashes returned, but use passlib
-internally. There are two schenarios where you might want to use hashes used by
-applications other then Django in your Django application:
+[Django](https://www.djangoproject.com/). Unlike passlibs
+[passlib.ext.django](https://pythonhosted.org/passlib/lib/passlib.ext.django.html#module-passlib.ext.django),
+it does not replace Djangos [password management
+system](https://docs.djangoproject.com/en/dev/topics/auth/passwords/) but
+provides standard hashers that can be added to the `PASSWORD_HASHERS` setting
+for hash schemes provided by passlib.
+
+There are two primary usecases for this module:
 
 1. You want to import password hashes from an existing application into your
    Django database.
 2. You want to export password hashes to a different application in the
    future.
+
+Getting started
+---------------
+
+This module supports almost every hash supported by passlib, but hashes must be
+slightly modified in order to fit into Djangos hash encoding scheme (see "How
+it works interally" below for details). Every hasher class is named like the
+module provided by passlib, and every hash has a `from_orig` and `to_orig`
+method, which allows to import/export hashes. So importing a user from a
+different system is simply a matter of calling `from_orig` of the right hasher
+and save that to the "password" field of Djangos `User` model. Here is a simple
+example:
+
+```python
+# Lets import a phpass (WordPress, phpBB3, ...) hash. This assumes that you
+# have 'hashers_passlib.phpass' in your PASSWORD_HASHERS setting.
+
+from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import get_hasher
+
+User = get_user_model()  # get any custom user model
+
+hasher = get_hasher('phpass')
+
+# you got this from i.e. a WordPress database:
+raw_hashes = {
+    'joe': '$P$EnOjUf5ie1AeWMHpw1dqHUQYHAIBe41',
+    'jane': '$P$E6UROQJscRzZ3ve2hoIFZ1OcjBA1W10',
+}
+
+for username, hash in raw_hashes.items():
+    user = User.objects.create(username=username)
+    user.password = hasher.from_orig(hash)
+    user.save()
+```
+
+The users "joe" and "jane" can now login with their old usernames and
+passwords. If you want to export users with a phpass hash to a WordPress
+database again, you can simple get the original hashes back (for simplicity, we
+just print everything to stdout here):
+
+```python
+from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import get_hasher
+
+User = get_user_model()  # get any custom user model
+
+hasher = get_hasher('phpass')
+
+for user in User.objects.filter(password__startswith='phpass$'):
+    orig_hash = hasher.to_orig(user.password)
+    print('%s has hash "%s"' % (user.username, orig_hash))
+```
+
+How it works internally
+-----------------------
+
+Djangos password management system stores passwords in a format that is very
+similar but still distinct from what passlib calls [Modular Crypt
+Format](https://pythonhosted.org/passlib/modular_crypt_format.html#modular-crypt-format):
+
+    <algorithm>$<content>
+
+... where "<algorithm>" is the identifier used to select what hasher should
+handle the hash. The only difference the Modular Crypt Format is that it misses
+the leading `$` sign. Note that the `$` in the middle is a mandatory delimiter.
+
+This module works by modifying the hash schemes so they fit into this scheme
+before storing them in the database. The modifications are absolutely
+reversible - in fact this module depends on it being reversible, our hashers
+won't work any other way. Depending on the original hash scheme, the hashes are
+modified in one of several ways:
+
+1. Some "standard" modular crypt hashes just have the leading `$` stripped.
+2. Some modular crypt hash schemes with ambiguous identifiers are (i.e. `$1$`
+   for md5_crypt or even `$sha1$`) have a different identifier to make them
+   unique.
+3. Some modular crypt hashes (such as
+   [sun_md5_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sun_md5_crypt.html)
+   encode information in their identifier, so they are prefixed with another
+   identifier so the identifier is consistent.
+4. All hashes that don't follow the modular crypt scheme have `<identifier>$
+   prepended.
+5. Some old and insecure hashes require the username to encode the hash.
+   Djangos hashers don't receive the username, so they are not compatible with
+   this approach.
+6. Some of passlibs hashes are already supported by Django and the
+   functionality is not duplicated here.
