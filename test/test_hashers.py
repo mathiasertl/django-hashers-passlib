@@ -24,6 +24,8 @@ import sys
 sys.path.insert(0, 'example')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'example.settings'
 
+from passlib import hash
+
 from django.conf import settings
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.hashers import load_hashers
@@ -31,6 +33,8 @@ from django.contrib.auth.hashers import make_password
 from django.test import TestCase
 
 import hashers_passlib
+from hashers_passlib import converters
+
 
 PASSWORDS = [
     'I',
@@ -219,3 +223,21 @@ class hex_sha256_test(TestCase, TestMixin):
 
 class hex_sha512_test(TestCase, TestMixin):
     hasher = hashers_passlib.hex_sha512()
+
+
+class TestConverterMixin(object):
+    def setUp(self):
+        self.alt_hasher = getattr(self.hasher._load_library(), self.converter.__class__.__name__)
+
+    def test_base(self):
+        for password in PASSWORDS:
+            orig = self.alt_hasher.encrypt(password)
+            conv = self.converter.from_orig(orig)
+
+            self.assertTrue(self.hasher.verify(password, conv))
+            back = self.converter.to_orig(conv)
+            self.assertTrue(self.alt_hasher.verify(password, back))
+
+class bsd_nthash_test(TestConverterMixin, TestCase):
+    hasher = hashers_passlib.nthash()
+    converter = converters.bsd_nthash()
