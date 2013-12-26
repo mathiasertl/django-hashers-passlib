@@ -182,10 +182,6 @@ class ldap_salted_sha1(PrefixedHasher):
     pass
 
 
-class ldap_hex_md5(PrefixedNoArgsHasher):
-    pass
-
-
 class ldap_hex_sha1(PrefixedNoArgsHasher):
     pass
 

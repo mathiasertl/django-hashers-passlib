@@ -157,10 +157,6 @@ class ldap_salted_sha1_test(TestCase, TestMixin):
     hasher = hashers_passlib.ldap_salted_sha1()
 
 
-class ldap_hex_md5_test(TestCase, TestMixin):
-    hasher = hashers_passlib.ldap_hex_md5()
-
-
 class ldap_hex_sha1_test(TestCase, TestMixin):
     hasher = hashers_passlib.ldap_hex_sha1()
 
@@ -238,6 +234,34 @@ class TestConverterMixin(object):
             back = self.converter.to_orig(conv)
             self.assertTrue(self.alt_hasher.verify(password, back))
 
+
+class TestConverterToStockMixin(object):
+    def setUp(self):
+        self.alt_hasher = getattr(hash, self.converter.__class__.__name__)
+
+    def test_base(self):
+        path = 'django.contrib.auth.hashers.%s' % self.hasher
+
+        with self.settings(PASSWORD_HASHERS=[path, ]):
+            load_hashers(settings.PASSWORD_HASHERS)
+
+            for password in PASSWORDS:
+                orig = self.alt_hasher.encrypt(password)
+                conv = self.converter.from_orig(orig)
+
+                # see if we get a working hash:
+                self.assertTrue(check_password(password, conv))
+
+                # convert back and test with passlib:
+                back = self.converter.to_orig(conv)
+                self.assertEqual(orig, back)
+
+
 class bsd_nthash_test(TestConverterMixin, TestCase):
     hasher = hashers_passlib.nthash()
     converter = converters.bsd_nthash()
+
+
+class ldap_hex_md5_test(TestConverterToStockMixin, TestCase):
+    hasher = 'UnsaltedMD5PasswordHasher'
+    converter = converters.ldap_hex_md5()

@@ -16,8 +16,21 @@
 # You should have received a copy of the GNU General Public License along with
 # django-hashers-passlib.  If not, see <http://www.gnu.org/licenses/>.
 
+from base64 import b64encode
+from base64 import b64decode
+from binascii import unhexlify
+from binascii import hexlify
+
+
 class Converter(object):
-    pass
+    def from_orig(self, encoded):
+        """Convert from the alias to the one we can store in the database"""
+        raise NotImplementedError
+
+    def to_orig(self, encoded):
+        """Convert from the hash in the database back."""
+        raise NotImplementedError
+
 
 class bsd_nthash(Converter):
     def from_orig(self, encoded):
@@ -25,3 +38,20 @@ class bsd_nthash(Converter):
 
     def to_orig(self, encoded):
         return '$3$$%s' % encoded[7:]
+
+
+# currently not working
+#class ldap_md5(Converter):
+#    def from_orig(self, encoded):
+#        return '{MD5}%s' % b64encode(unhexlify(encoded[5:]))
+#
+#    def to_orig(self, encoded):
+#        return '{MD5}%s' % hexlify(b64decode(encoded[5:]))
+
+
+class ldap_hex_md5(Converter):
+    def from_orig(self, encoded):
+        return encoded[5:]
+
+    def to_orig(self, encoded):
+        return '{MD5}%s' % encoded
