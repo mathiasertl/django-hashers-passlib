@@ -102,6 +102,12 @@ one of several ways:
 6. Some of passlibs hashes are already supported by Django and the
    functionality is not duplicated here.
 
+The following table lists all hashes supported by passlib and how the are
+supported by this module.
+
 Algorithm | Notes
 --- | --- 
-[des_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.des_crypt.html#passlib.hash.des_crypt)</td> | Prefixed with `des_crypt$`.
+[des_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.des_crypt.html)</td> | Prefixed with `des_crypt$`.
+[bsdi_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.bsdi_crypt.html) | Prefixed with `bsdi_crypt$`.
+[bigcrypt](https://pythonhosted.org/passlib/lib/passlib.hash.bigcrypt.html) | Prefixed with `bigcrypt$`.
+[crypt16](https://pythonhosted.org/passlib/lib/passlib.hash.crypt16.html) | Prefixed with `crypt16$`.
