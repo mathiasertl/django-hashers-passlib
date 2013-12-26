@@ -111,3 +111,9 @@ Algorithm | Notes
 [bsdi_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.bsdi_crypt.html) | Prefixed with `bsdi_crypt$`.
 [bigcrypt](https://pythonhosted.org/passlib/lib/passlib.hash.bigcrypt.html) | Prefixed with `bigcrypt$`.
 [crypt16](https://pythonhosted.org/passlib/lib/passlib.hash.crypt16.html) | Prefixed with `crypt16$`.
+[md5_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.md5_crypt.html) | Use the identifier `md5_crypt$` instead of the `$1$`.
+[bcrypt](https://pythonhosted.org/passlib/lib/passlib.hash.bcrypt.html) | Already supported by Django, so not implemented here.
+[sha1_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sha1_crypt.html) | Use the identifier `sha1_crypt$` instead of `$sha1$, since `sha1$` is already used by an old Django hasher.
+[sun_md5_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sun_md5_crypt.html) | The identifier already encodes the number of rounds, so hashes are prefixed with the additional identifier `sun_md5_crypt$`.
+[sha256_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sha256_crypt.html) | Use the identifier `sha256_crypt$` instead of `$5$`.
+[sha512_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sha512_crypt.html) | Use the identifier `sha512_crypt$` instead of `$5$`.
