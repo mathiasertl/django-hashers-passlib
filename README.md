@@ -90,7 +90,6 @@ Algorithm | Notes
 [dlitz_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.dlitz_pbkdf2_sha1.html) | Because `cta_pbkdf2_sha1` uses the same identifier, `dlitz_pbkdf2_sha1$` is prepended.
 [cta_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.cta_pbkdf2_sha1.html) | Because `dlitz_pbkdf2_sha1` uses the same identifier, `cta_pbkdf2_sha1$` is prepended.
 [scram](https://pythonhosted.org/passlib/lib/passlib.hash.scram.html) | Only the leading `$` is stripped, so hashes will start with `scram$`.
-[ldap_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_md5) | Prefixed with `ldap_md5$`.
 [ldap_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_sha1) | Prefixed with `ldap_sha1$`.
 [ldap_salted_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_salted_md5) | Prefixed with `ldap_salted_md5$`.
 [ldap_salted_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_salted_sha1) | Prefixed with `ldap_salted_sha1$`.
@@ -151,6 +150,7 @@ can be used to convert from and to the original scheme:
 From | To | Notes
 --- | --- | ---
 [bsd_nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.bsd_nthash) | [nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.nthash) | Convert from bsd_nthash to nthash and vice versa.
+[ldap_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_md5) | - | Converted to plain md5 hash already supported by Django.
 [ldap_hex_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_other.html#passlib.hash.ldap_hex_md5) | - | Converted to plain md5 hash already supported by Django.
 
 Unsupported hashes

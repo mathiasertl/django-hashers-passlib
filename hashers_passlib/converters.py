@@ -40,13 +40,12 @@ class bsd_nthash(Converter):
         return '$3$$%s' % encoded[7:]
 
 
-# currently not working
-#class ldap_md5(Converter):
-#    def from_orig(self, encoded):
-#        return '{MD5}%s' % b64encode(unhexlify(encoded[5:]))
-#
-#    def to_orig(self, encoded):
-#        return '{MD5}%s' % hexlify(b64decode(encoded[5:]))
+class ldap_md5(Converter):
+    def from_orig(self, encoded):
+        return hexlify(b64decode(encoded[5:]))
+
+    def to_orig(self, encoded):
+        return '{MD5}%s' % b64encode(unhexlify(encoded))
 
 
 class ldap_hex_md5(Converter):
