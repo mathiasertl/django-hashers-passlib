@@ -48,6 +48,14 @@ class ldap_md5(Converter):
         return '{MD5}%s' % b64encode(unhexlify(encoded))
 
 
+class ldap_sha1(Converter):
+    def from_orig(self, encoded):
+        return 'sha1$$%s' % hexlify(b64decode(encoded[5:]))
+
+    def to_orig(self, encoded):
+        return '{SHA}%s' % b64encode(unhexlify(encoded[6:]))
+
+
 class ldap_hex_md5(Converter):
     def from_orig(self, encoded):
         return encoded[5:]

@@ -166,10 +166,6 @@ class scram(ModularCryptHasher):
     pass
 
 
-class ldap_sha1(PrefixedNoArgsHasher):
-    pass
-
-
 class ldap_salted_md5(PrefixedHasher):
     pass
 

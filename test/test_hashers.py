@@ -141,10 +141,6 @@ class scram_test(TestCase, TestMixin):
     hasher = hashers_passlib.scram()
 
 
-class ldap_sha1_test(TestCase, TestMixin):
-    hasher = hashers_passlib.ldap_sha1()
-
-
 class ldap_salted_md5_test(TestCase, TestMixin):
     hasher = hashers_passlib.ldap_salted_md5()
 
@@ -257,9 +253,16 @@ class bsd_nthash_test(TestConverterMixin, TestCase):
     hasher = hashers_passlib.nthash()
     converter = converters.bsd_nthash()
 
+
 class ldap_md5_test(TestConverterToStockMixin, TestCase):
     hasher = 'UnsaltedMD5PasswordHasher'
     converter = converters.ldap_md5()
+
+
+class ldap_sha1_test(TestConverterToStockMixin, TestCase):
+    hasher = 'UnsaltedSHA1PasswordHasher'
+    converter = converters.ldap_sha1()
+
 
 class ldap_hex_md5_test(TestConverterToStockMixin, TestCase):
     hasher = 'UnsaltedMD5PasswordHasher'
