@@ -88,11 +88,10 @@ other way. Depending on the original hash scheme, the hashes are modified in
 one of several ways:
 
 1. Some "standard" modular crypt hashes just have the leading `$` stripped.
-2. Some modular crypt hash schemes with ambiguous identifiers are (i.e. `$1$`
-   for md5_crypt or even `$sha1$`) have a different identifier to make them
-   unique.
+2. Some modular crypt hash schemes with ambiguous identifiers (like `$1$` for
+   md5_crypt or even `$sha1$`) have a different identifier to make them unique.
 3. Some modular crypt hashes (such as
-   [sun_md5_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sun_md5_crypt.html)
+   [sun_md5_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sun_md5_crypt.html))
    encode information in their identifier, so they are prefixed with another
    identifier so the identifier is consistent.
 4. All hashes that don't follow the modular crypt scheme have `<identifier>$
@@ -102,3 +101,14 @@ one of several ways:
    this approach.
 6. Some of passlibs hashes are already supported by Django and the
    functionality is not duplicated here.
+
+<table border="1">
+    <tr>
+        <th>algorithm</th>
+        <th>Notes</th>
+    <tr>
+    <tr>
+        <td>[des_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.des_crypt.html#passlib.hash.des_crypt)</td>
+        <td>Prefixed with `des_crypt$`.</td>
+    </tr>
+</table>
