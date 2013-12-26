@@ -124,3 +124,13 @@ Algorithm | Notes
 [cta_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.cta_pbkdf2_sha1.html) | Because `dlitz_pbkdf2_sha1` uses the same identifier, `cta_pbkdf2_sha1$` is prepended.
 [scram](https://pythonhosted.org/passlib/lib/passlib.hash.scram.html) | Only the leading `$` is stripped, so hashes will start with `scram$`.
 [bsd_nthash](https://pythonhosted.org/passlib/lib/passlib.hash.html) | Just an alias, strip the leading `$3$` and import as `nthash` for import.
+[ldap_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_md5) | Prefixed with `ldap_md5$`.
+[ldap_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_sha1) | Prefixed with `ldap_sha1$`.
+[ldap_salted_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_salted_md5) | Prefixed with `ldap_salted_md5$`.
+[ldap_salted_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_salted_sha1) | Prefixed with `ldap_salted_sha1$`.
+[ldap_crypt_&lt;digest&gt;](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_crypt.html) | Just a prefix to regular crypt schemes, so please strip the prefix and import as regular hashers.
+[ldap_hex_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_other.html#passlib.hash.ldap_hex_md5) | Prefixed with `ldap_hex_md5`.
+[ldap_hex_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_other.html#passlib.hash.ldap_hex_sha1) | Prefixed with `ldap_hex_sha1`.
+[ldap_pbkdf2_&lt;digest&gt>](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_pbkdf2_digest.html) | These hashes are standard PBKDF2 hashes and are essentially already supported by Django. Just replace i.e. `{PBKDF2}` with `PBKDF2$`.
+[atlassian_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.atlassian_pbkdf2_sha1.html) | Prefixed with `atlassian_pbkdf2_sha1`.
+[fshp](https://pythonhosted.org/passlib/lib/passlib.hash.fshp.html) | Prefixed with `fshp$`.
