@@ -156,7 +156,7 @@ Unsupported hashes
 
 Some hashes are unsupported:
 
-Hash | Reason
+Algorithm | Reason
 --- | ---
 [msdcc](https://pythonhosted.org/passlib/lib/passlib.hash.msdcc.html) | Scheme requires a username to generate a salt.
 
