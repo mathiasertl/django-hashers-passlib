@@ -119,7 +119,7 @@ Algorithm | Notes
 [sha512_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sha512_crypt.html) | Use the identifier `sha512_crypt$` instead of `$5$`.
 [apr_md5_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.apr_md5_crypt.html) | Only the leading `$` is stripped, so hashes will start with `apr1$`.
 [phpass](https://pythonhosted.org/passlib/lib/passlib.hash.phpass.html) | Since different implementations use different prefixes, the identifier `phpass$` is prepended.
-[pbkdf2_<digest>](https://pythonhosted.org/passlib/lib/passlib.hash.pbkdf2_digest.html) | Already supported by Django, so not implemented here.
+[pbkdf2_&lt;digest&gt;](https://pythonhosted.org/passlib/lib/passlib.hash.pbkdf2_digest.html) | Already supported by Django, so not implemented here.
 [dlitz_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.dlitz_pbkdf2_sha1.html) | Because `cta_pbkdf2_sha1` uses the same identifier, `dlitz_pbkdf2_sha1$` is prepended.
 [cta_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.cta_pbkdf2_sha1.html) | Because `dlitz_pbkdf2_sha1` uses the same identifier, `cta_pbkdf2_sha1$` is prepended.
 [scram](https://pythonhosted.org/passlib/lib/passlib.hash.scram.html) | Only the leading `$` is stripped, so hashes will start with `scram$`.
