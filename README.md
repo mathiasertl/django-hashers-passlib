@@ -17,14 +17,14 @@ There are two primary usecases for this module:
 Getting started
 ---------------
 
-This module supports almost every hash supported by passlib, but hashes must be
-slightly modified in order to fit into Djangos hash encoding scheme (see "How
-it works interally" below for details). Every hasher class is named like the
-module provided by passlib and every hash has a `from_orig()` and `to_orig()`
-method, which allows to import/export hashes. So importing a user from a
-different system is simply a matter of calling `from_orig()` of the right hasher
-and save that to the `password` field of Djangos `User` model. Here is a simple
-example:
+This module supports almost every hash supported by passlib (some must be
+converted at first - see below), but hashes must be slightly modified in order
+to fit into Djangos hash encoding scheme (see "How it works interally" below
+for details).  Every hasher class is named like the module provided by passlib
+and every hash has a `from_orig()` and `to_orig()` method, which allows to
+import/export hashes. So importing a user from a different system is simply a
+matter of calling `from_orig()` of the right hasher and save that to the
+`password` field of Djangos `User` model. Here is a simple example:
 
 ```python
 # Lets import a phpass (WordPress, phpBB3, ...) hash. This assumes that you
