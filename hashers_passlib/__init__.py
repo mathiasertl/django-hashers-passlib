@@ -126,8 +126,8 @@ class crypt16(PrefixedHasher):
     pass
 
 
-class md5_crypt(PrefixedHasher):
-    pass
+class md5_crypt(RenamedModularCryptHasher):
+    orig_scheme = '1'
 
 
 class sha1_crypt(RenamedModularCryptHasher):
