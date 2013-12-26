@@ -102,13 +102,6 @@ one of several ways:
 6. Some of passlibs hashes are already supported by Django and the
    functionality is not duplicated here.
 
-<table border="1">
-    <tr>
-        <th>algorithm</th>
-        <th>Notes</th>
-    <tr>
-    <tr>
-        <td>[des_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.des_crypt.html#passlib.hash.des_crypt)</td>
-        <td>Prefixed with `des_crypt$`.</td>
-    </tr>
-</table>
+Algorithm | Notes
+--- | --- 
+[des_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.des_crypt.html#passlib.hash.des_crypt)</td> | Prefixed with `des_crypt$`.
