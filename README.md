@@ -123,7 +123,7 @@ Algorithm | Notes
 [dlitz_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.dlitz_pbkdf2_sha1.html) | Because `cta_pbkdf2_sha1` uses the same identifier, `dlitz_pbkdf2_sha1$` is prepended.
 [cta_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.cta_pbkdf2_sha1.html) | Because `dlitz_pbkdf2_sha1` uses the same identifier, `cta_pbkdf2_sha1$` is prepended.
 [scram](https://pythonhosted.org/passlib/lib/passlib.hash.scram.html) | Only the leading `$` is stripped, so hashes will start with `scram$`.
-[bsd_nthash](https://pythonhosted.org/passlib/lib/passlib.hash.html) | Just an alias, strip the leading `$3$` and import as `nthash` for import.
+[bsd_nthash](https://pythonhosted.org/passlib/lib/passlib.hash.html) | Just an alias, strip the leading `$3$` and import as `nthash`.
 [ldap_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_md5) | Prefixed with `ldap_md5$`.
 [ldap_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_sha1) | Prefixed with `ldap_sha1$`.
 [ldap_salted_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_salted_md5) | Prefixed with `ldap_salted_md5$`.
