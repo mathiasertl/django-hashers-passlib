@@ -20,10 +20,10 @@ Getting started
 This module supports almost every hash supported by passlib, but hashes must be
 slightly modified in order to fit into Djangos hash encoding scheme (see "How
 it works interally" below for details). Every hasher class is named like the
-module provided by passlib, and every hash has a `from_orig` and `to_orig`
+module provided by passlib and every hash has a `from_orig()` and `to_orig()`
 method, which allows to import/export hashes. So importing a user from a
-different system is simply a matter of calling `from_orig` of the right hasher
-and save that to the "password" field of Djangos `User` model. Here is a simple
+different system is simply a matter of calling `from_orig()` of the right hasher
+and save that to the `password` field of Djangos `User` model. Here is a simple
 example:
 
 ```python
@@ -76,15 +76,16 @@ Format](https://pythonhosted.org/passlib/modular_crypt_format.html#modular-crypt
 
     <algorithm>$<content>
 
-... where "<algorithm>" is the identifier used to select what hasher should
-handle the hash. The only difference the Modular Crypt Format is that it misses
-the leading `$` sign. Note that the `$` in the middle is a mandatory delimiter.
+... where "&ltlalgorithm&gt;" is the identifier used to select what hasher
+class should handle the hash. The only difference to the Modular Crypt Format
+is that it misses the leading `$` sign. Note that the `$` in the middle is a
+mandatory delimiter.
 
-This module works by modifying the hash schemes so they fit into this scheme
-before storing them in the database. The modifications are absolutely
-reversible - in fact this module depends on it being reversible, our hashers
-won't work any other way. Depending on the original hash scheme, the hashes are
-modified in one of several ways:
+This module modifies the hash schemes so they fit into this scheme before
+storing them in the database. The modifications are absolutely reversible - in
+fact this module depends on it being reversible, our hashers won't work any
+other way. Depending on the original hash scheme, the hashes are modified in
+one of several ways:
 
 1. Some "standard" modular crypt hashes just have the leading `$` stripped.
 2. Some modular crypt hash schemes with ambiguous identifiers are (i.e. `$1$`
