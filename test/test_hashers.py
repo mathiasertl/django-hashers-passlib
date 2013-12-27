@@ -267,3 +267,12 @@ class ldap_hex_md5_test(TestConverterToStockMixin, TestCase):
 class ldap_hex_sha1_test(TestConverterToStockMixin, TestCase):
     hasher = 'UnsaltedSHA1PasswordHasher'
     converter = converters.ldap_hex_sha1()
+
+class ldap_des_crypt_test(TestConverterMixin, TestCase):
+    hasher = hashers_passlib.des_crypt()
+    converter = converters.ldap_des_crypt()
+
+
+class ldap_bsdi_crypt_test(TestConverterMixin, TestCase):
+    hasher = hashers_passlib.bsdi_crypt()
+    converter = converters.ldap_bsdi_crypt()

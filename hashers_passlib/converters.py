@@ -70,3 +70,17 @@ class ldap_hex_sha1(Converter):
 
     def to_orig(self, encoded):
         return '{SHA}%s' % encoded[6:]
+
+class ldap_crypt_converter(Converter):
+    def from_orig(self, encoded):
+        return encoded[7:]
+
+    def to_orig(self, encoded):
+        return '{CRYPT}%s' % encoded
+
+class ldap_des_crypt(ldap_crypt_converter):
+    pass
+
+
+class ldap_bsdi_crypt(ldap_crypt_converter):
+    pass
