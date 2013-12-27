@@ -149,8 +149,8 @@ From | To | Notes
 --- | --- | ---
 [bsd_nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.bsd_nthash) | [nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.nthash) | Convert from bsd_nthash to nthash and vice versa.
 [ldap_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_md5) | - | Converted to plain MD5 hash by Django.
-[ldap_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_sha1) | - | Converted to plain SHA1 hash already supported by Django.
-[ldap_hex_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_other.html#passlib.hash.ldap_hex_md5) | - | Converted to plain MD5 hash already by Django.
+[ldap_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_sha1) | - | Converted to plain SHA1 hash supported by Django.
+[ldap_hex_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_other.html#passlib.hash.ldap_hex_md5) | - | Converted to plain MD5 hash by Django.
 [ldap_hex_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_other.html#passlib.hash.ldap_hex_sha1) | - | Converted to plain SHA1 hash supported by Django.
 
 Unsupported hashes
