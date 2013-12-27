@@ -105,14 +105,19 @@ scheme. For example, the
 [bsd_nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.bsd_nthash)
 is just a regular
 [nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.nthash)
-with `$3$$` prepended.  In order to avoid code duplication, this module does
-not provide password hashers for these schemes, but converters under
-`hashers_passlib.converters`. Converted hashes are either readable by a
-different hasher or by a hasher provided by Django. In the latter case you can
-save the converted value directly to the users `password` field.
+with `$3$$` prepended and the
+[ldap_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_md5)
+has is just a plain MD5 hash with `{MD5}` prepended that is already supported
+by Django. 
+
+In order to avoid code duplication, this module does not provide password
+hashers for these schemes, but converters under `hashers_passlib.converters`.
+Converted hashes are either readable by a different hasher or by a hasher
+provided by Django. In the latter case you can save the converted value
+directly to the users `password` field.
 
 If you want to import `bsd_nthash` hashes, you can either manually strip the
-identifier or use our converter:
+identifier or use the converter:
 
 ```python
 # Lets import bsd_nthash hashes as plain nthash hashes. This assumes you have
