@@ -174,10 +174,6 @@ class ldap_salted_sha1(PrefixedHasher):
     pass
 
 
-class ldap_hex_sha1(PrefixedNoArgsHasher):
-    pass
-
-
 class atlassian_pbkdf2_sha1(PrefixedHasher):
     pass
 

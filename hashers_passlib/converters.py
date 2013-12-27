@@ -34,10 +34,10 @@ class Converter(object):
 
 class bsd_nthash(Converter):
     def from_orig(self, encoded):
-        return 'nthash$%s' % encoded[4:]
+        return encoded[4:]
 
     def to_orig(self, encoded):
-        return '$3$$%s' % encoded[7:]
+        return '$3$$%s' % encoded
 
 
 class ldap_md5(Converter):
@@ -62,3 +62,11 @@ class ldap_hex_md5(Converter):
 
     def to_orig(self, encoded):
         return '{MD5}%s' % encoded
+
+
+class ldap_hex_sha1(Converter):
+    def from_orig(self, encoded):
+        return 'sha1$$%s' % encoded[5:]
+
+    def to_orig(self, encoded):
+        return '{SHA}%s' % encoded[6:]

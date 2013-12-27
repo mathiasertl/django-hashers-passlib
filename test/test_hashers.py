@@ -149,10 +149,6 @@ class ldap_salted_sha1_test(TestCase, TestMixin):
     hasher = hashers_passlib.ldap_salted_sha1()
 
 
-class ldap_hex_sha1_test(TestCase, TestMixin):
-    hasher = hashers_passlib.ldap_hex_sha1()
-
-
 class atlassian_pbkdf2_sha1_test(TestCase, TestMixin):
     hasher = hashers_passlib.atlassian_pbkdf2_sha1()
 
@@ -222,9 +218,9 @@ class TestConverterMixin(object):
             orig = self.alt_hasher.encrypt(password)
             conv = self.converter.from_orig(orig)
 
-            self.assertTrue(self.hasher.verify(password, conv))
+            self.assertTrue(self.hasher.hasher.verify(password, conv))
             back = self.converter.to_orig(conv)
-            self.assertTrue(self.alt_hasher.verify(password, back))
+            self.assertEqual(back, orig)
 
 
 class TestConverterToStockMixin(object):
@@ -267,3 +263,7 @@ class ldap_sha1_test(TestConverterToStockMixin, TestCase):
 class ldap_hex_md5_test(TestConverterToStockMixin, TestCase):
     hasher = 'UnsaltedMD5PasswordHasher'
     converter = converters.ldap_hex_md5()
+
+class ldap_hex_sha1_test(TestConverterToStockMixin, TestCase):
+    hasher = 'UnsaltedSHA1PasswordHasher'
+    converter = converters.ldap_hex_sha1()
