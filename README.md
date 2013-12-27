@@ -70,32 +70,46 @@ for user in User.objects.filter(password__startswith='phpass$'):
 Supported hashes
 ----------------
 
-The following password hashers are available in this module:
+This module provides hashes for most hash schemes provided by passlib. Some
+have to be be converted first (see below), and only a few minor old hashes are
+not supported. All password hashers have the same class name as the passlib
+hasher they wrap and are located in the `hashers_passlib` module. So to enable
+support for e.g. `sha1_crypt` hashes, add `hashers_passlib.sha1_crypt` to your
+`PASSWORD_HASHERS` Django setting.
 
-Algorithm | Notes
---- | --- 
-[des_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.des_crypt.html)</td> | Prefixed with `des_crypt$`.
-[bsdi_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.bsdi_crypt.html) | Prefixed with `bsdi_crypt$`.
-[bigcrypt](https://pythonhosted.org/passlib/lib/passlib.hash.bigcrypt.html) | Prefixed with `bigcrypt$`.
-[crypt16](https://pythonhosted.org/passlib/lib/passlib.hash.crypt16.html) | Prefixed with `crypt16$`.
-[md5_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.md5_crypt.html) | Use the identifier `md5_crypt$` instead of the `$1$`.
-[bcrypt](https://pythonhosted.org/passlib/lib/passlib.hash.bcrypt.html) | Already supported by Django, so not implemented here.
-[sha1_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sha1_crypt.html) | Use the identifier `sha1_crypt$` instead of `$sha1$`, since `sha1$` is already used by an old Django hasher.
-[sun_md5_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sun_md5_crypt.html) | The identifier already encodes the number of rounds, so hashes are prefixed with the additional identifier `sun_md5_crypt$`.
-[sha256_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sha256_crypt.html) | Use the identifier `sha256_crypt$` instead of `$5$`.
-[sha512_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sha512_crypt.html) | Use the identifier `sha512_crypt$` instead of `$5$`.
-[apr_md5_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.apr_md5_crypt.html) | Only the leading `$` is stripped, so hashes will start with `apr1$`.
-[phpass](https://pythonhosted.org/passlib/lib/passlib.hash.phpass.html) | Since different implementations use different prefixes, the identifier `phpass$` is prepended.
-[pbkdf2_&lt;digest&gt;](https://pythonhosted.org/passlib/lib/passlib.hash.pbkdf2_digest.html) | Already supported by Django, so not implemented here.
-[dlitz_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.dlitz_pbkdf2_sha1.html) | Because `cta_pbkdf2_sha1` uses the same identifier, `dlitz_pbkdf2_sha1$` is prepended.
-[cta_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.cta_pbkdf2_sha1.html) | Because `dlitz_pbkdf2_sha1` uses the same identifier, `cta_pbkdf2_sha1$` is prepended.
-[scram](https://pythonhosted.org/passlib/lib/passlib.hash.scram.html) | Only the leading `$` is stripped, so hashes will start with `scram$`.
-[ldap_salted_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_salted_md5) | Prefixed with `ldap_salted_md5$`.
-[ldap_salted_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_salted_sha1) | Prefixed with `ldap_salted_sha1$`.
-[ldap_crypt_&lt;digest&gt;](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_crypt.html) | Just a prefix to regular crypt schemes, so please strip the prefix and import as regular hashers.
-[ldap_pbkdf2_&lt;digest&gt>](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_pbkdf2_digest.html) | These hashes are standard PBKDF2 hashes and are essentially already supported by Django. Just replace i.e. `{PBKDF2}` with `PBKDF2$`.
-[atlassian_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.atlassian_pbkdf2_sha1.html) | Prefixed with `atlassian_pbkdf2_sha1`.
-[fshp](https://pythonhosted.org/passlib/lib/passlib.hash.fshp.html) | Prefixed with `fshp$`.
+The following algorithms are supported: 
+[des_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.des_crypt.html),
+[bsdi_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.bsdi_crypt.html),
+[bigcrypt](https://pythonhosted.org/passlib/lib/passlib.hash.bigcrypt.html),
+[crypt16](https://pythonhosted.org/passlib/lib/passlib.hash.crypt16.html),
+[md5_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.md5_crypt.html),
+[sha1_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sha1_crypt.html),
+[sun_md5_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sun_md5_crypt.html),
+[sha256_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sha256_crypt.html),
+[sha512_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sha512_crypt.html),
+[apr_md5_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.apr_md5_crypt.html),
+[phpass](https://pythonhosted.org/passlib/lib/passlib.hash.phpass.html),
+[pbkdf2_&lt;digest&gt;](https://pythonhosted.org/passlib/lib/passlib.hash.pbkdf2_digest.html),
+[dlitz_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.dlitz_pbkdf2_sha1.html),
+[cta_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.cta_pbkdf2_sha1.html),
+[scram](https://pythonhosted.org/passlib/lib/passlib.hash.scram.html),
+[ldap_salted_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_salted_md5),
+[ldap_salted_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_salted_sha1),
+[ldap_pbkdf2_&lt;digest&gt>](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_pbkdf2_digest.html),
+[atlassian_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.atlassian_pbkdf2_sha1.html),
+[fshp](https://pythonhosted.org/passlib/lib/passlib.hash.fshp.html),
+[mssql2000](https://pythonhosted.org/passlib/lib/passlib.hash.mssql2000.html),
+[msssql2005](https://pythonhosted.org/passlib/lib/passlib.hash.mssql2005.html),
+[mysql323](https://pythonhosted.org/passlib/lib/passlib.hash.mysql323.html),
+[mysql41](https://pythonhosted.org/passlib/lib/passlib.hash.mysql41.html),
+[oracle11](https://pythonhosted.org/passlib/lib/passlib.hash.oracle11.html),
+[lmhash](https://pythonhosted.org/passlib/lib/passlib.hash.lmhash.html),
+[bthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html),
+[cisco_pix](https://pythonhosted.org/passlib/lib/passlib.hash.cisco_pix.html),
+[cisco_ctype7](https://pythonhosted.org/passlib/lib/passlib.hash.cisco_type7.html),
+[grub_pbkdf2_sha512](https://pythonhosted.org/passlib/lib/passlib.hash.grub_pbkdf2_sha512.html)
+and
+[hex_{md4,sha256,sha512}](https://pythonhosted.org/passlib/lib/passlib.hash.hex_digests.html).
 
 Hashes supported via conversion
 -------------------------------
@@ -162,7 +176,10 @@ Some hashes are unsupported:
 
 Algorithm | Reason
 --- | ---
+[postgres_md5](https://pythonhosted.org/passlib/lib/passlib.hash.postgres_md5.html) | Scheme requires a username to generate a salt.
+[oracle10](https://pythonhosted.org/passlib/lib/passlib.hash.oracle10.html) | Scheme requires a username to generate a salt.
 [msdcc](https://pythonhosted.org/passlib/lib/passlib.hash.msdcc.html) | Scheme requires a username to generate a salt.
+[msdcc2](https://pythonhosted.org/passlib/lib/passlib.hash.msdcc2.html) | Scheme requires a username to generate a salt.
 
 How it works internally
 -----------------------
@@ -184,17 +201,11 @@ fact this module depends on it being reversible, our hashers won't work any
 other way. Depending on the original hash scheme, the hashes are modified in
 one of several ways:
 
-1. Some "standard" modular crypt hashes just have the leading `$` stripped.
-2. Some modular crypt hash schemes with ambiguous identifiers (like `$1$` for
-   md5_crypt or even `$sha1$`) have a different identifier to make them unique.
-3. Some modular crypt hashes (such as
-   [sun_md5_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sun_md5_crypt.html))
-   encode information in their identifier, so they are prefixed with another
-   identifier so the identifier is consistent.
-4. All hashes that don't follow the modular crypt scheme have `<identifier>$
-   prepended.
-5. Some old and insecure hashes require the username to encode the hash.
-   Djangos hashers don't receive the username, so they are not compatible with
-   this approach.
-6. Some of passlibs hashes are already supported by Django and the
+1. Some old and insecure hashes require the username to encode the hash.
+   Djangos hashers don't receive the username, so they are not compatible and
+   not supported by this module.
+2. Some of passlibs hashes are already supported by Django and the
    functionality is not duplicated here.
+3. All other hashes (which is the vast majority!) just have `<identifier>$
+   prepended. This is the same approach as what Django does with e.g. bcrypt
+   hashes.

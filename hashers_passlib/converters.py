@@ -25,19 +25,20 @@ from binascii import hexlify
 class Converter(object):
     def from_orig(self, encoded):
         """Convert from the alias to the one we can store in the database"""
-        raise NotImplementedError
+        return '%s$%s' % (self.prefix, encoded[len(self.orig_prefix):])
 
     def to_orig(self, encoded):
         """Convert from the hash in the database back."""
-        raise NotImplementedError
+        return '%s%s' % (self.orig_prefix, encoded[len(self.prefix) + 1:])
+
+
+class LDAPCryptConverter(Converter):
+    orig_prefix = '{CRYPT}'
 
 
 class bsd_nthash(Converter):
-    def from_orig(self, encoded):
-        return 'nthash$%s' % encoded[4:]
-
-    def to_orig(self, encoded):
-        return '$3$$%s' % encoded[7:]
+    prefix = 'nthash'
+    orig_prefix = '$3$$'
 
 
 class ldap_md5(Converter):
@@ -65,55 +66,33 @@ class ldap_hex_md5(Converter):
 
 
 class ldap_hex_sha1(Converter):
-    def from_orig(self, encoded):
-        return 'sha1$$%s' % encoded[5:]
-
-    def to_orig(self, encoded):
-        return '{SHA}%s' % encoded[6:]
-
-class ldap_crypt_converter(Converter):
-    def from_orig(self, encoded):
-        return '%s$%s' % (self.prefix, encoded[7:])
-
-    def to_orig(self, encoded):
-        return '{CRYPT}%s' % encoded[len(self.prefix) + 1:]
+    prefix = 'sha1$'
+    orig_prefix = '{SHA}'
 
 
-class LDAPCryptRenamingConverter(Converter):
-    def from_orig(self, encoded):
-        return '%s%s' % (self.prefix, encoded[7 + len(self.orig_prefix) + 1:])
-
-    def to_orig(self, encoded):
-        return '{CRYPT}$%s%s' % (self.orig_prefix, encoded[len(self.prefix):])
-
-class ldap_des_crypt(ldap_crypt_converter):
+class ldap_des_crypt(LDAPCryptConverter):
     prefix = 'des_crypt'
 
 
-class ldap_bsdi_crypt(ldap_crypt_converter):
+class ldap_bsdi_crypt(LDAPCryptConverter):
     prefix = 'bsdi_crypt'
 
 
-class ldap_md5_crypt(LDAPCryptRenamingConverter):
+class ldap_md5_crypt(LDAPCryptConverter):
     prefix = 'md5_crypt'
-    orig_prefix = '1'
 
 
-class ldap_bcrypt(ldap_crypt_converter):
-    """Special, because Django already supports this with a douple '$$'"""
+class ldap_bcrypt(LDAPCryptConverter):
     prefix = 'bcrypt'
 
 
-class ldap_sha1_crypt(LDAPCryptRenamingConverter):
+class ldap_sha1_crypt(LDAPCryptConverter):
     prefix = 'sha1_crypt'
-    orig_prefix = 'sha1'
 
 
-class ldap_sha256_crypt(LDAPCryptRenamingConverter):
+class ldap_sha256_crypt(LDAPCryptConverter):
     prefix = 'sha256_crypt'
-    orig_prefix = '5'
 
 
-class ldap_sha512_crypt(LDAPCryptRenamingConverter):
+class ldap_sha512_crypt(LDAPCryptConverter):
     prefix = 'sha512_crypt'
-    orig_prefix = '6'

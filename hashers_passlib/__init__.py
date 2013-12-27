@@ -27,7 +27,6 @@ class PasslibHasher(BasePasswordHasher):
     library = "passlib.hash"
     _hasher = None
     _algorithm = None
-    hasher_name = None
 
     def salt(self):
         """Just return None, passlib handles salt-generation."""
@@ -41,62 +40,14 @@ class PasslibHasher(BasePasswordHasher):
 
     @property
     def hasher(self):
-        if self.hasher_name is None:
-            self.hasher_name = self.__class__.__name__
-
-        if self._hasher is None:
-            self._hasher = getattr(self._load_library(), self.hasher_name)
-        return self._hasher
+        return getattr(self._load_library(), self.algorithm)
 
     def verify(self, password, encoded):
         return self.hasher.verify(password, self.to_orig(encoded))
 
     def encode(self, password, salt=None):
-        return self.from_orig(self.hasher.encrypt(password, salt=salt))
+        return self.from_orig(self.hasher.encrypt(password))
 
-
-class ModularCryptHasher(PasslibHasher):
-    """Base class for modular crypt schemes.
-
-    Hashes generated/understood by this hasher look exactly like the original
-    scheme except that the leading ``$`` is stripped.
-    """
-    def from_orig(self, hash):
-        return hash.lstrip('$')
-
-    def to_orig(self, hash):
-        return '$%s' % hash
-
-
-class RenamedModularCryptHasher(PasslibHasher):
-    """Base class for modular crypt schemes where either the scheme name
-    collides with a different scheme or the scheme is just a short number,
-    making collisions with future hash schemes likely.
-
-    Hashes generated/understood by this hasher look like the original hash
-    but the leading ``$scheme`` is replaced by just ``new-name`` (without the
-    leading ``$`` sign).
-    """
-    def from_orig(self, hash):
-        return '%s$%s' % (self.algorithm, hash.lstrip('$').split('$', 1)[1])
-
-    def to_orig(self, hash):
-        return '$%s$%s' % (self.orig_scheme, hash.split('$', 1)[1])
-
-class PrefixedModularCryptHasher(PasslibHasher):
-    """Similar to the :py:class:`RenamedModularCryptHasher`, but prefixes
-    a hash with the name of the algorithm.
-    """
-    def from_orig(self, encrypted):
-        return '%s%s' % (self.algorithm, encrypted)
-
-    def to_orig(self, encoded):
-        return '$%s' % encoded.split('$', 1)[1]
-
-class PrefixedHasher(PasslibHasher):
-    """Base class for all schemes that are not modular crypt schemes. The
-    original hash is prefixed with the algorithm and a ``$``.
-    """
     def from_orig(self, hash):
         return '%s$%s' % (self.algorithm, hash)
 
@@ -104,131 +55,125 @@ class PrefixedHasher(PasslibHasher):
         return hash.split('$', 1)[1]
 
 
-class PrefixedNoArgsHasher(PrefixedHasher):
-    """Same as the PrefixedHasher but does not pass a salt."""
-    def encode(self, password, salt=None):
-        return self.from_orig(self.hasher.encrypt(password))
-
-
-class des_crypt(PrefixedHasher):
+class des_crypt(PasslibHasher):
     pass
 
 
-class bsdi_crypt(PrefixedHasher):
+class bsdi_crypt(PasslibHasher):
     pass
 
 
-class bigcrypt(PrefixedHasher):
+class bigcrypt(PasslibHasher):
     pass
 
 
-class crypt16(PrefixedHasher):
+class crypt16(PasslibHasher):
     pass
 
 
-class md5_crypt(RenamedModularCryptHasher):
-    orig_scheme = '1'
-
-
-class sha1_crypt(RenamedModularCryptHasher):
-    orig_scheme = 'sha1'
-
-
-class sun_md5_crypt(PrefixedModularCryptHasher):
+class md5_crypt(PasslibHasher):
     pass
 
 
-class sha256_crypt(RenamedModularCryptHasher):
-    orig_scheme = '5'
-
-
-class sha512_crypt(RenamedModularCryptHasher):
-    orig_scheme = '6'
-
-
-class apr_md5_crypt(ModularCryptHasher):
-    algorithm = 'apr1'
-
-
-class phpass(PrefixedModularCryptHasher):
+class sha1_crypt(PasslibHasher):
     pass
 
 
-class cta_pbkdf2_sha1(PrefixedModularCryptHasher):
+class sun_md5_crypt(PasslibHasher):
     pass
 
 
-class dlitz_pbkdf2_sha1(PrefixedModularCryptHasher):
+class sha256_crypt(PasslibHasher):
     pass
 
 
-class scram(ModularCryptHasher):
+class sha512_crypt(PasslibHasher):
     pass
 
 
-class ldap_salted_md5(PrefixedHasher):
+class apr_md5_crypt(PasslibHasher):
     pass
 
 
-class ldap_salted_sha1(PrefixedHasher):
+class phpass(PasslibHasher):
     pass
 
 
-class atlassian_pbkdf2_sha1(PrefixedHasher):
+class cta_pbkdf2_sha1(PasslibHasher):
     pass
 
 
-class fshp(PrefixedHasher):
+class dlitz_pbkdf2_sha1(PasslibHasher):
     pass
 
 
-class mssql2000(PrefixedHasher):
+class scram(PasslibHasher):
     pass
 
 
-class mssql2005(PrefixedHasher):
+class ldap_salted_md5(PasslibHasher):
     pass
 
 
-class mysql323(PrefixedNoArgsHasher):
+class ldap_salted_sha1(PasslibHasher):
     pass
 
 
-class mysql41(PrefixedNoArgsHasher):
+class atlassian_pbkdf2_sha1(PasslibHasher):
     pass
 
 
-class oracle11(PrefixedHasher):
+class fshp(PasslibHasher):
     pass
 
 
-class lmhash(PrefixedNoArgsHasher):
+class mssql2000(PasslibHasher):
     pass
 
 
-class nthash(PrefixedNoArgsHasher):
+class mssql2005(PasslibHasher):
     pass
 
 
-class cisco_pix(PrefixedNoArgsHasher):
+class mysql323(PasslibHasher):
     pass
 
 
-class cisco_type7(PrefixedHasher):
+class mysql41(PasslibHasher):
     pass
 
 
-class grub_pbkdf2_sha512(PrefixedHasher):
+class oracle11(PasslibHasher):
     pass
 
 
-class hex_md4(PrefixedNoArgsHasher):
+class lmhash(PasslibHasher):
     pass
 
 
-class hex_sha256(PrefixedNoArgsHasher):
+class nthash(PasslibHasher):
     pass
 
 
-class hex_sha512(PrefixedNoArgsHasher):
+class cisco_pix(PasslibHasher):
+    pass
+
+
+class cisco_type7(PasslibHasher):
+    pass
+
+
+class grub_pbkdf2_sha512(PasslibHasher):
+    pass
+
+
+class hex_md4(PasslibHasher):
+    pass
+
+
+class hex_sha256(PasslibHasher):
+    pass
+
+
+class hex_sha512(PasslibHasher):
     pass

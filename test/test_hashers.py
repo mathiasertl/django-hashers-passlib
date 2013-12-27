@@ -74,15 +74,31 @@ class TestMixin(object):
                 encoded_orig = self.hasher.to_orig(encoded)
                 self.assertTrue(self.hasher.hasher.verify(password, encoded_orig))
 
-    def test_from_orig(self):
-        with self.settings(PASSWORD_HASHERS=[self.path, ]):
+                back = self.hasher.from_orig(encoded_orig)
+                self.assertEqual(encoded, back)
+
+
+class TestConverterMixin(object):
+    def setUp(self):
+        self.alt_hasher = getattr(hash, self.converter.__class__.__name__)
+
+    def test_base(self):
+        with self.settings(PASSWORD_HASHERS=[self.hasher, ]):
             load_hashers(settings.PASSWORD_HASHERS)
 
             for password in PASSWORDS:
-                # create and import hash
-                encoded_orig = self.hasher.hasher.encrypt(password)
-                encoded = self.hasher.from_orig(encoded_orig)
-                self.assertTrue(check_password(password, encoded))
+                orig = self.alt_hasher.encrypt(password)
+#                print('orig', orig)
+                conv = self.converter.from_orig(orig)
+#                print('conv', conv)
+
+                # see if we get a working hash:
+                self.assertTrue(check_password(password, conv))
+
+                # convert back and test with passlib:
+                back = self.converter.to_orig(conv)
+#                print('back', back)
+                self.assertEqual(orig, back)
 
 
 class des_crypt_test(TestCase, TestMixin):
@@ -207,29 +223,6 @@ class hex_sha256_test(TestCase, TestMixin):
 
 class hex_sha512_test(TestCase, TestMixin):
     hasher = hashers_passlib.hex_sha512()
-
-
-class TestConverterMixin(object):
-    def setUp(self):
-        self.alt_hasher = getattr(hash, self.converter.__class__.__name__)
-
-    def test_base(self):
-        with self.settings(PASSWORD_HASHERS=[self.hasher, ]):
-            load_hashers(settings.PASSWORD_HASHERS)
-
-            for password in PASSWORDS:
-                orig = self.alt_hasher.encrypt(password)
-                print(orig)
-                conv = self.converter.from_orig(orig)
-                print(conv)
-
-                # see if we get a working hash:
-                self.assertTrue(check_password(password, conv))
-
-                # convert back and test with passlib:
-                back = self.converter.to_orig(conv)
-                print(back)
-                self.assertEqual(orig, back)
 
 
 class bsd_nthash_test(TestConverterMixin, TestCase):
