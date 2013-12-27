@@ -113,8 +113,7 @@ by Django.
 In order to avoid code duplication, this module does not provide password
 hashers for these schemes, but converters under `hashers_passlib.converters`.
 Converted hashes are either readable by a different hasher or by a hasher
-provided by Django. In the latter case you can save the converted value
-directly to the users `password` field.
+provided by Django.
 
 If you want to import `bsd_nthash` hashes, you can either manually strip the
 identifier or use the converter:
@@ -128,7 +127,6 @@ from django.contrib.auth.hashers import get_hasher
 
 from hashers_passlib.converters import bsd_nthash
 
-hasher = get_hasher('phpass')
 conv = bsd_nthash()
 
 raw_hashes = {
@@ -139,10 +137,7 @@ for username, hash in raw_hashes.items():
     user = User.objects.create(username=username)
 
     # convert bsd_nthash to plain nthash:
-    nthash_hash = converter.from_orig(hash)
-
-    # proceed as before:
-    user.password = hasher.from_orig(hash)
+    user.password = converter.from_orig(hash)
     user.save()
 
 ```
@@ -152,12 +147,13 @@ can be used to convert from and to the original scheme:
 
 From | To | Notes
 --- | --- | ---
-[bsd_nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.bsd_nthash) | [nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.nthash) | Convert from bsd_nthash to nthash and vice versa.
-[ldap_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_md5) | - | Converted to plain MD5 hash supported by Django.
-[ldap_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_sha1) | - | Converted to plain SHA1 hash supported by Django.
-[ldap_hex_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_other.html#passlib.hash.ldap_hex_md5) | - | Converted to plain MD5 hash supported by Django.
-[ldap_hex_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_other.html#passlib.hash.ldap_hex_sha1) | - | Converted to plain SHA1 hash supported by Django.
-[ldap_{crypt}](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_crypt.html) | - | Converted to their non-LDAP pendants.
+[bsd_nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.bsd_nthash) | `nthash` | Convert from bsd_nthash to nthash and vice versa.
+[ldap_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_md5) | `UnsaltedMD5PasswordHasher` | Converted to plain MD5 hash supported by Django.
+[ldap_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_sha1) | `UnsaltedSHA1PasswordHasher` | Converted to plain SHA1 hash supported by Django.
+[ldap_hex_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_other.html#passlib.hash.ldap_hex_md5) | `UnsaltedMD5PasswordHasher` | Converted to plain MD5 hash supported by Django.
+[ldap_hex_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_other.html#passlib.hash.ldap_hex_sha1) | `UnsaltedSHA1PasswordHasher` | Converted to plain SHA1 hash supported by Django.
+[ldap_{crypt}](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_crypt.html) | various | Converted to their non-LDAP pendants (i.e. `ldap_des_crypt` is converted to a plain `des_crypt` hash).
+[ldap_bcrypt](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_crypt.html) | `BCryptPasswordHasher` | Unlike other ldap_{crypt} schemes, ldap_bcrypt hashes are converted to what Djangos stock BCrypt hashser understands.
 
 Unsupported hashes
 ------------------

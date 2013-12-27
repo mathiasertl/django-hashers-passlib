@@ -34,10 +34,10 @@ class Converter(object):
 
 class bsd_nthash(Converter):
     def from_orig(self, encoded):
-        return encoded[4:]
+        return 'nthash$%s' % encoded[4:]
 
     def to_orig(self, encoded):
-        return '$3$$%s' % encoded
+        return '$3$$%s' % encoded[7:]
 
 
 class ldap_md5(Converter):
@@ -73,14 +73,47 @@ class ldap_hex_sha1(Converter):
 
 class ldap_crypt_converter(Converter):
     def from_orig(self, encoded):
-        return encoded[7:]
+        return '%s$%s' % (self.prefix, encoded[7:])
 
     def to_orig(self, encoded):
-        return '{CRYPT}%s' % encoded
+        return '{CRYPT}%s' % encoded[len(self.prefix) + 1:]
+
+
+class LDAPCryptRenamingConverter(Converter):
+    def from_orig(self, encoded):
+        return '%s%s' % (self.prefix, encoded[7 + len(self.orig_prefix) + 1:])
+
+    def to_orig(self, encoded):
+        return '{CRYPT}$%s%s' % (self.orig_prefix, encoded[len(self.prefix):])
 
 class ldap_des_crypt(ldap_crypt_converter):
-    pass
+    prefix = 'des_crypt'
 
 
 class ldap_bsdi_crypt(ldap_crypt_converter):
-    pass
+    prefix = 'bsdi_crypt'
+
+
+class ldap_md5_crypt(LDAPCryptRenamingConverter):
+    prefix = 'md5_crypt'
+    orig_prefix = '1'
+
+
+class ldap_bcrypt(ldap_crypt_converter):
+    """Special, because Django already supports this with a douple '$$'"""
+    prefix = 'bcrypt'
+
+
+class ldap_sha1_crypt(LDAPCryptRenamingConverter):
+    prefix = 'sha1_crypt'
+    orig_prefix = 'sha1'
+
+
+class ldap_sha256_crypt(LDAPCryptRenamingConverter):
+    prefix = 'sha256_crypt'
+    orig_prefix = '5'
+
+
+class ldap_sha512_crypt(LDAPCryptRenamingConverter):
+    prefix = 'sha512_crypt'
+    orig_prefix = '6'
