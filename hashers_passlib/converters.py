@@ -36,6 +36,11 @@ class LDAPCryptConverter(Converter):
     orig_prefix = '{CRYPT}'
 
 
+class bcrypt(Converter):
+    prefix = 'bcrypt'
+    orig_prefix = ''
+
+
 class bsd_nthash(Converter):
     prefix = 'nthash'
     orig_prefix = '$3$$'

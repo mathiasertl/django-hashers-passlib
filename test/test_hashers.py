@@ -225,6 +225,11 @@ class hex_sha512_test(TestCase, TestMixin):
     hasher = hashers_passlib.hex_sha512()
 
 
+class bcrypt_test(TestConverterMixin, TestCase):
+    hasher = 'django.contrib.auth.hashers.BCryptPasswordHasher'
+    converter = converters.bcrypt()
+
+
 class bsd_nthash_test(TestConverterMixin, TestCase):
     hasher = 'hashers_passlib.nthash'
     converter = converters.bsd_nthash()

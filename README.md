@@ -99,7 +99,7 @@ The following algorithms are supported:
 [atlassian_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.atlassian_pbkdf2_sha1.html),
 [fshp](https://pythonhosted.org/passlib/lib/passlib.hash.fshp.html),
 [mssql2000](https://pythonhosted.org/passlib/lib/passlib.hash.mssql2000.html),
-[msssql2005](https://pythonhosted.org/passlib/lib/passlib.hash.mssql2005.html),
+[mssql2005](https://pythonhosted.org/passlib/lib/passlib.hash.mssql2005.html),
 [mysql323](https://pythonhosted.org/passlib/lib/passlib.hash.mysql323.html),
 [mysql41](https://pythonhosted.org/passlib/lib/passlib.hash.mysql41.html),
 [oracle11](https://pythonhosted.org/passlib/lib/passlib.hash.oracle11.html),
@@ -161,6 +161,7 @@ can be used to convert from and to the original scheme:
 
 From | To | Notes
 --- | --- | ---
+[bcrypt](https://pythonhosted.org/passlib/lib/passlib.hash.bcrypt.html) | `BCryptPasswordHasher` | Converted to bcrypt hash supported by the stock Django hasher.
 [bsd_nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.bsd_nthash) | `nthash` | Convert from bsd_nthash to nthash and vice versa.
 [ldap_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_md5) | `UnsaltedMD5PasswordHasher` | Converted to plain MD5 hash supported by Django.
 [ldap_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_sha1) | `UnsaltedSHA1PasswordHasher` | Converted to plain SHA1 hash supported by Django.

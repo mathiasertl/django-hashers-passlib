@@ -79,7 +79,6 @@ class crypt16(PasslibHasher):
 class md5_crypt(PasslibHasher):
     pass
 
-#TODO: bcrypt (already supported by Django, should provide a converter)
 
 class sha1_crypt(PasslibHasher):
     pass
