@@ -54,7 +54,9 @@ class PasslibHasher(BasePasswordHasher):
     def to_orig(self, hash):
         return hash.split('$', 1)[1]
 
-
+############################
+### Archaic Unix Schemes ###
+############################
 class des_crypt(PasslibHasher):
     pass
 
@@ -71,9 +73,13 @@ class crypt16(PasslibHasher):
     pass
 
 
+#############################
+### Standard Unix Schemes ###
+#############################
 class md5_crypt(PasslibHasher):
     pass
 
+#TODO: bcrypt (already supported by Django, should provide a converter)
 
 class sha1_crypt(PasslibHasher):
     pass
@@ -91,12 +97,21 @@ class sha512_crypt(PasslibHasher):
     pass
 
 
+###################################
+### Other Modular Crypt Schemes ###
+###################################
 class apr_md5_crypt(PasslibHasher):
     pass
 
 
+#TODO: bcrypt_sha256 (incompatible with Djangos bcrypt_sha256!)
+
+
 class phpass(PasslibHasher):
     pass
+
+
+# TODO: pbkdf2_sha512
 
 
 class cta_pbkdf2_sha1(PasslibHasher):
@@ -111,6 +126,13 @@ class scram(PasslibHasher):
     pass
 
 
+# bsd_nthash is provided by a converter
+
+#############################
+### Standard LDAP schemes ###
+#############################
+# ldap_md5 is provided by a converter
+# ldap_sha1 is provided by a converter
 class ldap_salted_md5(PasslibHasher):
     pass
 
@@ -119,6 +141,16 @@ class ldap_salted_sha1(PasslibHasher):
     pass
 
 
+# ldap_{crypt} provided by aconverter
+# ldap_plaintext makes no sense to support
+
+#################################
+### Non-Standard LDAP Schemes ###
+#################################
+# ldap_hex_md5 is provided by a converter
+# ldap_hex_sha1 is provided by a converter
+#TODO: ldap_pbkdf2_{digest}
+
 class atlassian_pbkdf2_sha1(PasslibHasher):
     pass
 
@@ -126,7 +158,11 @@ class atlassian_pbkdf2_sha1(PasslibHasher):
 class fshp(PasslibHasher):
     pass
 
+# roundup_plaintext makes no sense to support
 
+###########################
+### SQL Database Hashes ###
+###########################
 class mssql2000(PasslibHasher):
     pass
 
@@ -142,11 +178,16 @@ class mysql323(PasslibHasher):
 class mysql41(PasslibHasher):
     pass
 
+# postgres_md5 is incompatible (requires username for hash)
+# oracle10 is incompatible (requires username for hash)
 
 class oracle11(PasslibHasher):
     pass
 
 
+#########################
+### MS Windows Hashes ###
+#########################
 class lmhash(PasslibHasher):
     pass
 
@@ -154,7 +195,13 @@ class lmhash(PasslibHasher):
 class nthash(PasslibHasher):
     pass
 
+# msdcc is incompatible (requires username for hash)
+# msdcc2 is incompatible (requires username for hash)
 
+
+####################
+### Other hashes ###
+####################
 class cisco_pix(PasslibHasher):
     pass
 
@@ -162,6 +209,7 @@ class cisco_pix(PasslibHasher):
 class cisco_type7(PasslibHasher):
     pass
 
+# django_{digest} not supported, for obvious reasons
 
 class grub_pbkdf2_sha512(PasslibHasher):
     pass
@@ -170,6 +218,8 @@ class grub_pbkdf2_sha512(PasslibHasher):
 class hex_md4(PasslibHasher):
     pass
 
+# hex_md5 is already supported by Django
+# hex_sha1 is already supported by Django
 
 class hex_sha256(PasslibHasher):
     pass
