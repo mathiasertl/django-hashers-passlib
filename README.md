@@ -105,9 +105,9 @@ The following algorithms are supported:
 [mysql41](https://pythonhosted.org/passlib/lib/passlib.hash.mysql41.html),
 [oracle11](https://pythonhosted.org/passlib/lib/passlib.hash.oracle11.html),
 [lmhash](https://pythonhosted.org/passlib/lib/passlib.hash.lmhash.html),
-[bthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html),
+[nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html),
 [cisco_pix](https://pythonhosted.org/passlib/lib/passlib.hash.cisco_pix.html),
-[cisco_ctype7](https://pythonhosted.org/passlib/lib/passlib.hash.cisco_type7.html),
+[cisco_type7](https://pythonhosted.org/passlib/lib/passlib.hash.cisco_type7.html),
 [grub_pbkdf2_sha512](https://pythonhosted.org/passlib/lib/passlib.hash.grub_pbkdf2_sha512.html)
 and
 [hex_{md4,sha256,sha512}](https://pythonhosted.org/passlib/lib/passlib.hash.hex_digests.html).
