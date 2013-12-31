@@ -89,6 +89,7 @@ The following algorithms are supported:
 [sha256_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sha256_crypt.html),
 [sha512_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.sha512_crypt.html),
 [apr_md5_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.apr_md5_crypt.html),
+[bcrypt_sha256](https://pythonhosted.org/passlib/lib/passlib.hash.bcrypt_sha256.html),
 [phpass](https://pythonhosted.org/passlib/lib/passlib.hash.phpass.html),
 [pbkdf2_&lt;digest&gt;](https://pythonhosted.org/passlib/lib/passlib.hash.pbkdf2_digest.html),
 [dlitz_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.dlitz_pbkdf2_sha1.html),
