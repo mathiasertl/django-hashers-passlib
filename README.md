@@ -197,7 +197,7 @@ Format](https://pythonhosted.org/passlib/modular_crypt_format.html#modular-crypt
 
     <algorithm>$<content>
 
-... where "&ltlalgorithm&gt;" is the identifier used to select what hasher
+... where "&lt;algorithm&gt;" is the identifier used to select what hasher
 class should handle the hash. The only difference to the Modular Crypt Format
 is that it misses the leading `$` sign. Note that the `$` in the middle is a
 mandatory delimiter.
