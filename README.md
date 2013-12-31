@@ -112,7 +112,7 @@ The following algorithms are supported:
 and
 [hex_{md4,sha256,sha512}](https://pythonhosted.org/passlib/lib/passlib.hash.hex_digests.html).
 
-Most hashes will be saved with a simple prefix `&lt;algorithm&gt;$`, where
+Most hashes will be saved with a simple prefix `<algorithm>$`, where
 "&lt;algorithm&gt;" is the name of the hasher. The only exception are a few
 hashes (`bcrypt_sha256`) that already almost fit into Djangos hash scheme,
 where only the leading `$` is stripped.
