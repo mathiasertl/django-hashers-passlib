@@ -114,8 +114,9 @@ class sha512_crypt(PasslibHasher):
 ###################################
 ### Other Modular Crypt Schemes ###
 ###################################
-class apr_md5_crypt(PasslibHasher):
-    pass
+class apr_md5_crypt(PasslibCryptSchemeHasher):
+    handler = 'apr_md5_crypt'
+    algorithm = 'apr1'
 
 
 class bcrypt_sha256(PasslibCryptSchemeHasher):
@@ -149,7 +150,7 @@ class dlitz_pbkdf2_sha1(PasslibHasher):
     pass
 
 
-class scram(PasslibHasher):
+class scram(PasslibCryptSchemeHasher):
     pass
 
 

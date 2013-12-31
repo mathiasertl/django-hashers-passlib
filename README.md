@@ -113,8 +113,9 @@ and
 
 Most hashes will be saved with a simple prefix `<algorithm>$`, where
 "&lt;algorithm&gt;" is the name of the hasher. The only exception are a few
-hashes (`bcrypt_sha256`, `pbkdf2_<digest>`) that already almost fit into
-Djangos hash scheme, where only the leading `$` is stripped.
+hashes (`apr_md5_crypt`, `bcrypt_sha256`, `pbkdf2_<digest>`, `scram`) that
+already almost fit into Djangos hash scheme, where only the leading `$` is
+stripped.
 
 **NOTE:** Some hashes (`bcrypt_sha256`, `pbkdf2_<digest>`, ...) look very
 similar to what Django provides but are actually distinct algorithms.
