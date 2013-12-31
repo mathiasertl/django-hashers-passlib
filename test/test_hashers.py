@@ -149,6 +149,18 @@ class phpass_test(TestCase, TestMixin):
     hasher = hashers_passlib.phpass()
 
 
+class pbkdf2_test(TestCase, TestMixin):
+    hasher = hashers_passlib.pbkdf2()
+
+
+class pbkdf2_sha256_test(TestCase, TestMixin):
+    hasher = hashers_passlib.pbkdf2_sha256()
+
+
+class pbkdf2_sha512_test(TestCase, TestMixin):
+    hasher = hashers_passlib.pbkdf2_sha512()
+
+
 class cta_pbkdf2_sha1_test(TestCase, TestMixin):
     hasher = hashers_passlib.cta_pbkdf2_sha1()
 

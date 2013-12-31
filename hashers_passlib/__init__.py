@@ -127,7 +127,18 @@ class phpass(PasslibHasher):
     pass
 
 
-# TODO: pbkdf2_sha512
+class pbkdf2(PasslibCryptSchemeHasher):
+    handler = 'pbkdf2_sha1'
+
+
+class pbkdf2_sha256(PasslibCryptSchemeHasher):
+    handler = 'pbkdf2_sha256'
+    algorithm = 'pbkdf2-sha256'
+
+
+class pbkdf2_sha512(PasslibCryptSchemeHasher):
+    handler = 'pbkdf2_sha512'
+    algorithm = 'pbkdf2-sha512'
 
 
 class cta_pbkdf2_sha1(PasslibHasher):
