@@ -25,6 +25,7 @@ class PasslibHasher(BasePasswordHasher):
     """Base class for all passlib-based hashers."""
 
     library = "passlib.hash"
+    handler = None
     _hasher = None
     _algorithm = None
 
@@ -38,9 +39,14 @@ class PasslibHasher(BasePasswordHasher):
             self._algorithm = self.__class__.__name__
         return self._algorithm
 
+    def get_handler(self):
+        if self.handler is None:
+            return self.algorithm
+        return self.handler
+
     @property
     def hasher(self):
-        return getattr(self._load_library(), self.algorithm)
+        return getattr(self._load_library(), self.get_handler())
 
     def verify(self, password, encoded):
         return self.hasher.verify(password, self.to_orig(encoded))
@@ -53,6 +59,15 @@ class PasslibHasher(BasePasswordHasher):
 
     def to_orig(self, hash):
         return hash.split('$', 1)[1]
+
+
+class PasslibCryptSchemeHasher(PasslibHasher):
+    def from_orig(self, encrypted):
+        return encrypted.lstrip('$')
+
+    def to_orig(self, encoded):
+        return '$%s' % encoded
+
 
 ############################
 ### Archaic Unix Schemes ###
@@ -103,7 +118,9 @@ class apr_md5_crypt(PasslibHasher):
     pass
 
 
-#TODO: bcrypt_sha256 (incompatible with Djangos bcrypt_sha256!)
+class bcrypt_sha256(PasslibCryptSchemeHasher):
+    handler = 'bcrypt_sha256'
+    algorithm = 'bcrypt-sha256'
 
 
 class phpass(PasslibHasher):

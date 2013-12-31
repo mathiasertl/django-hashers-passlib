@@ -70,12 +70,13 @@ for user in User.objects.filter(password__startswith='phpass$'):
 Supported hashes
 ----------------
 
-This module provides hashes for most hash schemes provided by passlib. Some
-have to be be converted first (see below), and only a few minor old hashes are
-not supported. All password hashers have the same class name as the passlib
-hasher they wrap and are located in the `hashers_passlib` module. So to enable
-support for e.g. `sha1_crypt` hashes, add `hashers_passlib.sha1_crypt` to your
-`PASSWORD_HASHERS` Django setting.
+This module provides hashers for most hash schemes provided by passlib - but
+remember you have to import them using the hashers `from_orig()` method first
+to be useable. Some have to be be converted first (see below), and only a few
+minor old hashes are not supported. All password hashers have the same class
+name as the passlib hasher they wrap and are located in the `hashers_passlib`
+module. So to enable support for e.g. `sha1_crypt` hashes, add
+`hashers_passlib.sha1_crypt` to your `PASSWORD_HASHERS` Django setting.
 
 The following algorithms are supported: 
 [des_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.des_crypt.html),
@@ -110,6 +111,11 @@ The following algorithms are supported:
 [grub_pbkdf2_sha512](https://pythonhosted.org/passlib/lib/passlib.hash.grub_pbkdf2_sha512.html)
 and
 [hex_{md4,sha256,sha512}](https://pythonhosted.org/passlib/lib/passlib.hash.hex_digests.html).
+
+Most hashes will be saved with a simple prefix `&lt;algorithm&gt;$`, where
+"&lt;algorithm&gt;" is the name of the hasher. The only exception are a few
+hashes (`bcrypt_sha256`) that already almost fit into Djangos hash scheme,
+where only the leading `$` is stripped.
 
 Hashes supported via conversion
 -------------------------------

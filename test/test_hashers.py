@@ -141,6 +141,10 @@ class apr_md5_crypt_test(TestCase, TestMixin):
     hasher = hashers_passlib.apr_md5_crypt()
 
 
+class bcrypt_sha256_test(TestCase, TestMixin):
+    hasher = hashers_passlib.bcrypt_sha256()
+
+
 class phpass_test(TestCase, TestMixin):
     hasher = hashers_passlib.phpass()
 
