@@ -96,7 +96,6 @@ The following algorithms are supported:
 [scram](https://pythonhosted.org/passlib/lib/passlib.hash.scram.html),
 [ldap_salted_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_salted_md5),
 [ldap_salted_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_salted_sha1),
-[ldap_pbkdf2_&lt;digest&gt>](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_pbkdf2_digest.html),
 [atlassian_pbkdf2_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.atlassian_pbkdf2_sha1.html),
 [fshp](https://pythonhosted.org/passlib/lib/passlib.hash.fshp.html),
 [mssql2000](https://pythonhosted.org/passlib/lib/passlib.hash.mssql2000.html),
