@@ -128,8 +128,9 @@ class phpass(PasslibHasher):
     pass
 
 
-class pbkdf2(PasslibCryptSchemeHasher):
+class pbkdf2_sha1(PasslibCryptSchemeHasher):
     handler = 'pbkdf2_sha1'
+    algorithm = 'pbkdf2'
 
 
 class pbkdf2_sha256(PasslibCryptSchemeHasher):
@@ -177,7 +178,7 @@ class ldap_salted_sha1(PasslibHasher):
 #################################
 # ldap_hex_md5 is provided by a converter
 # ldap_hex_sha1 is provided by a converter
-#TODO: ldap_pbkdf2_{digest}
+# ldap_pbkdf2_{digest} is provided by a converter
 
 class atlassian_pbkdf2_sha1(PasslibHasher):
     pass

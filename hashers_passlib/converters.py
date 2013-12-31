@@ -101,3 +101,18 @@ class ldap_sha256_crypt(LDAPCryptConverter):
 
 class ldap_sha512_crypt(LDAPCryptConverter):
     prefix = 'sha512_crypt'
+
+
+class ldap_pbkdf2_sha1(Converter):
+    prefix = 'pbkdf2'
+    orig_prefix = '{PBKDF2}'
+
+
+class ldap_pbkdf2_sha256(Converter):
+    prefix = 'pbkdf2-sha256'
+    orig_prefix = '{PBKDF2-SHA256}'
+
+
+class ldap_pbkdf2_sha512(Converter):
+    prefix = 'pbkdf2-sha512'
+    orig_prefix = '{PBKDF2-SHA512}'

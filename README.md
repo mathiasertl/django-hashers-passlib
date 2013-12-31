@@ -178,6 +178,7 @@ From | To | Notes
 [ldap_hex_sha1](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_other.html#passlib.hash.ldap_hex_sha1) | `UnsaltedSHA1PasswordHasher` | Converted to plain SHA1 hash supported by Django.
 [ldap_{crypt}](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_crypt.html) | various | Converted to their non-LDAP pendants (i.e. `ldap_des_crypt` is converted to a plain `des_crypt` hash).
 [ldap_bcrypt](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_crypt.html) | `BCryptPasswordHasher` | Unlike other ldap_{crypt} schemes, ldap_bcrypt hashes are converted to what Djangos stock BCrypt hashser understands.
+[ldap_pbkdf2_{digest}](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_pbkdf2_digest.html) | `pbkdf2_{digest}` | Converted to their non-LDAP pendants.
 
 Unsupported hashes
 ------------------

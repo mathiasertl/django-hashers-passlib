@@ -149,8 +149,8 @@ class phpass_test(TestCase, TestMixin):
     hasher = hashers_passlib.phpass()
 
 
-class pbkdf2_test(TestCase, TestMixin):
-    hasher = hashers_passlib.pbkdf2()
+class pbkdf2_sha1_test(TestCase, TestMixin):
+    hasher = hashers_passlib.pbkdf2_sha1()
 
 
 class pbkdf2_sha256_test(TestCase, TestMixin):
@@ -303,3 +303,18 @@ class ldap_sha256_crypt_test(TestConverterMixin, TestCase):
 class ldap_sha512_crypt_test(TestConverterMixin, TestCase):
     hasher = 'hashers_passlib.sha512_crypt'
     converter = converters.ldap_sha512_crypt()
+
+
+class ldap_pbkdf2_sha1_test(TestConverterMixin, TestCase):
+    hasher = 'hashers_passlib.pbkdf2_sha1'
+    converter = converters.ldap_pbkdf2_sha1()
+
+
+class ldap_pbkdf2_sha256_test(TestConverterMixin, TestCase):
+    hasher = 'hashers_passlib.pbkdf2_sha256'
+    converter = converters.ldap_pbkdf2_sha256()
+
+
+class ldap_pbkdf2_sha512_test(TestConverterMixin, TestCase):
+    hasher = 'hashers_passlib.pbkdf2_sha512'
+    converter = converters.ldap_pbkdf2_sha512()
