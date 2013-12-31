@@ -140,7 +140,7 @@ class ldap_salted_sha1(PasslibHasher):
     pass
 
 
-# ldap_{crypt} provided by aconverter
+# ldap_{crypt} provided by a converter
 # ldap_plaintext makes no sense to support
 
 #################################
