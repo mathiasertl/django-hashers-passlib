@@ -78,6 +78,12 @@ name as the passlib hasher they wrap and are located in the `hashers_passlib`
 module. So to enable support for e.g. `sha1_crypt` hashes, add
 `hashers_passlib.sha1_crypt` to your `PASSWORD_HASHERS` Django setting.
 
+**WARNING:** Some hashes are longer then the 128 characters provided by the
+standard User model provided by Django. You have to specify a [custom user
+model](https://docs.djangoproject.com/en/dev/topics/auth/customizing/#specifying-a-custom-user-model)
+with at least 256 characters (for `hex_sha512`, `pbkdf2_sha512`, `scram` and 
+`sha512_crypt`) or at least 384 characters for `grub_pbkdf2_sha512`.
+
 The following algorithms are supported: 
 [des_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.des_crypt.html),
 [bsdi_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.bsdi_crypt.html),

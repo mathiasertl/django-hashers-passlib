@@ -68,7 +68,6 @@ class TestMixin(object):
 
             for password in PASSWORDS:
                 encoded = make_password(password)
-                self.assertTrue(len(encoded) <= 128)
                 self.assertTrue(check_password(password, encoded))
 
                 # test to_orig, done here, to save a few hash-generations
@@ -89,17 +88,13 @@ class TestConverterMixin(object):
 
             for password in PASSWORDS:
                 orig = self.alt_hasher.encrypt(password)
-#                print('orig', orig)
                 conv = self.converter.from_orig(orig)
-                self.assertTrue(len(conv) <= 128)
-#                print('conv', conv)
 
                 # see if we get a working hash:
                 self.assertTrue(check_password(password, conv))
 
                 # convert back and test with passlib:
                 back = self.converter.to_orig(conv)
-#                print('back', back)
                 self.assertEqual(orig, back)
 
 
