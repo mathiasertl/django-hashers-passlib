@@ -190,14 +190,12 @@ From | To | Notes
 Unsupported hashes
 ------------------
 
-Some hashes are unsupported:
-
-Algorithm | Reason
---- | ---
-[postgres_md5](https://pythonhosted.org/passlib/lib/passlib.hash.postgres_md5.html) | Scheme requires a username to generate a salt.
-[oracle10](https://pythonhosted.org/passlib/lib/passlib.hash.oracle10.html) | Scheme requires a username to generate a salt.
-[msdcc](https://pythonhosted.org/passlib/lib/passlib.hash.msdcc.html) | Scheme requires a username to generate a salt.
-[msdcc2](https://pythonhosted.org/passlib/lib/passlib.hash.msdcc2.html) | Scheme requires a username to generate a salt.
+Some hashes are unsupported because they require the username to generate the
+salt: 
+[postgres_md5](https://pythonhosted.org/passlib/lib/passlib.hash.postgres_md5.html),
+[oracle10](https://pythonhosted.org/passlib/lib/passlib.hash.oracle10.html),
+[msdcc](https://pythonhosted.org/passlib/lib/passlib.hash.msdcc.html),
+[msdcc2](https://pythonhosted.org/passlib/lib/passlib.hash.msdcc2.html)
 
 How it works internally
 -----------------------
