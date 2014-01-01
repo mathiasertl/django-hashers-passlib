@@ -29,8 +29,6 @@ except ImportError:
 
 from distutils.command.clean import clean as _clean
 
-from test import test_hashers
-
 name = 'django-hashers-passlib'
 url = 'https://github.com/mathiasertl/django-hashers-passlib'
 version = '0.1'
@@ -57,6 +55,8 @@ class test(Command):
         pass
 
     def run(self):
+        from test import test_hashers
+
         loader = unittest.TestLoader()
         if self.algo is None:
             suite = loader.loadTestsFromModule(test_hashers)
