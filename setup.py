@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License along with
 # django-hashers-passlib.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
-
 import unittest
 
 try:
@@ -36,7 +34,10 @@ from test import test_hashers
 name = 'django-hashers-passlib'
 url = 'https://github.com/mathiasertl/django-hashers-passlib'
 version = '0.1'
-requires = ['passlib>=1.6', 'Django>=1.6' ]
+requires = [
+    'passlib>=1.6.2',
+    'Django>=1.5',
+]
 
 
 class clean(_clean):
@@ -73,7 +74,9 @@ setup(
     author_email='mati@er.tl',
     url=url,
 #    download_url='https://python.restauth.net/download/',
-    packages=['hashers_passlib', ],
+    packages=[
+        'hashers_passlib',
+    ],
     cmdclass={
         'clean': clean,
         'test': test,
