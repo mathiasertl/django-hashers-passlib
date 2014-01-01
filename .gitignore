@@ -6,3 +6,5 @@
 *.py[oc]
 *.sw[po]
 /example/
+/build/
+/*.egg-info/
