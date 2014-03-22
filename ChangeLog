@@ -1,8 +1,8 @@
 0.2 (XX XXXX XXX)
 
-* Remove distribute_setup.py
+* Remove distribute_setup.py.
 * Implement a generic safe_summary method for all hashers.
-* add bcrypt to requirements.txt
+* Add bcrypt to requirements.txt.
 * Version reported to setup.py is now the same as `git describe` if executed
   from a git repository.
 * Add a 'version' setup.py command.
