@@ -10,3 +10,5 @@
 /*.egg-info/
 /dist/
 /venv/
+/testproject/
+Makefile
