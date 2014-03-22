@@ -19,7 +19,15 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.hashers import BasePasswordHasher
+from django.contrib.auth.hashers import mask_hash
+from django.utils.datastructures import SortedDict
+from django.utils.translation import ugettext_noop as _
 
+_SETTINGS_MAPPING = (
+    (_('rounds'), 'iterations', False),
+    (_('salt'), 'salt', 2),
+    (_('checksum'), 'hash', 6),
+)
 
 class PasslibHasher(BasePasswordHasher):
     """Base class for all passlib-based hashers."""
@@ -59,6 +67,36 @@ class PasslibHasher(BasePasswordHasher):
 
     def to_orig(self, hash):
         return hash.split('$', 1)[1]
+
+    def safe_summary(self, encoded):
+        algorithm, hash = encoded.split('$', 1)
+        assert algorithm == self.algorithm
+
+        data = [(_('algorithm'), algorithm), ]
+        to_append = []
+
+        parsed = self.hasher.parsehash(self.to_orig(encoded))
+
+        # pop known fields that should be at the end first:
+        for name, mapping, mask in _SETTINGS_MAPPING:
+            value = parsed.pop(name, None)
+
+            if value is not None:
+                if mask is not False:
+                    try:
+                        # value is an int in some rare cases:
+                        value = mask_hash(str(value), show=mask)
+                    except UnicodeDecodeError:
+                        # Thrown if non-ascii bytes are in the hash
+                        value = '%s%s' % ('?' * mask, '*' * (len(value) - mask))
+
+                to_append.append((mapping, value))
+
+        # parse any left-over fields:
+        for key, value in parsed.items():
+            data.append((_(key), value))
+
+        return SortedDict(data + to_append)
 
 
 class PasslibCryptSchemeHasher(PasslibHasher):
