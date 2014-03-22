@@ -73,7 +73,7 @@ class TestMixin(object):
 
                 # test safe_summary():
                 summary = self.hasher.safe_summary(encoded)
-                self.assertTrue(isinstance(summary), SortedDict)
+                self.assertTrue(isinstance(summary, SortedDict))
                 self.assertTrue(len(summary) >= 1)
 
                 # test to_orig, done here, to save a few hash-generations
