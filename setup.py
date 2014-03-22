@@ -16,20 +16,45 @@
 # You should have received a copy of the GNU General Public License along with
 # django-hashers-passlib.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
 import unittest
 
 from setuptools import Command
 from setuptools import setup
+from subprocess import PIPE
+from subprocess import Popen
 
 from distutils.command.clean import clean as _clean
 
 name = 'django-hashers-passlib'
 url = 'https://github.com/mathiasertl/django-hashers-passlib'
-version = '0.1'
+LATEST_RELEASE = '0.1'
 requires = [
     'passlib>=1.6.2',
     'Django>=1.5',
 ]
+
+def get_version():
+    if os.path.exists('.git'):  # get from git
+        cmd = ['git', 'describe', 'master']
+        p = Popen(cmd, stdout=PIPE)
+        return p.communicate()[0].decode('utf-8').strip()
+    else:
+        return LATEST_RELEASE
+
+
+class version(Command):
+    description = "Print version and exit."
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        print(get_version())
 
 
 class clean(_clean):
@@ -61,7 +86,7 @@ class test(Command):
 
 setup(
     name=name,
-    version=version,
+    version=str(get_version()),
     description='Django hashers using passlib',
     long_description="""This library provides password hashers for the hash
 schemes provided by passlib for Djangos password hashing framework. Unlike
@@ -80,6 +105,7 @@ information and documentation.""",
     cmdclass={
         'clean': clean,
         'test': test,
+        'version': version,
     },
     license="GNU General Public License (GPL) v3",
     install_requires=requires,
