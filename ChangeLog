@@ -6,6 +6,7 @@
 * Version reported to setup.py is now the same as `git describe` if executed
   from a git repository.
 * Add a 'version' setup.py command.
+* Fix ldap_md5 and ldap_sha1 converters in Python 3.
 
 0.1 (01 January 2014)
 

@@ -48,18 +48,30 @@ class bsd_nthash(Converter):
 
 class ldap_md5(Converter):
     def from_orig(self, encoded):
-        return hexlify(b64decode(encoded[5:]))
+        data = hexlify(b64decode(encoded[5:]))
+        if isinstance(data, bytes):
+            data = data.decode('utf-8')
+        return data
 
     def to_orig(self, encoded):
-        return '{MD5}%s' % b64encode(unhexlify(encoded))
+        data = b64encode(unhexlify(encoded))
+        if isinstance(data, bytes):
+            data = data.decode('utf-8')
+        return '{MD5}%s' % data
 
 
 class ldap_sha1(Converter):
     def from_orig(self, encoded):
-        return 'sha1$$%s' % hexlify(b64decode(encoded[5:]))
+        data = hexlify(b64decode(encoded[5:]))
+        if isinstance(data, bytes):
+            data = data.decode('utf-8')
+        return 'sha1$$%s' % data
 
     def to_orig(self, encoded):
-        return '{SHA}%s' % b64encode(unhexlify(encoded[6:]))
+        data = b64encode(unhexlify(encoded[6:]))
+        if isinstance(data, bytes):
+            data = data.decode('utf-8')
+        return '{SHA}%s' % data
 
 
 class ldap_hex_md5(Converter):
