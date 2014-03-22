@@ -21,7 +21,8 @@ This module is available via pip, install it with
 
     pip install django-hashers-passlib
 
-It requires Django >= 1.5 (1.4 should work) and passlib >= 1.6.2.
+It requires Django >= 1.5 (1.4 should work) and passlib >= 1.6.2. It supports
+Python versions 2.7 and 3.2 or later.
 
 Getting started
 ---------------
