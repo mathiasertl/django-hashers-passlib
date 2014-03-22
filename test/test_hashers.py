@@ -31,6 +31,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.hashers import load_hashers
 from django.contrib.auth.hashers import make_password
 from django.test import TestCase
+from django.utils.datastructures import SortedDict
 
 import hashers_passlib
 from hashers_passlib import converters
@@ -69,6 +70,11 @@ class TestMixin(object):
             for password in PASSWORDS:
                 encoded = make_password(password)
                 self.assertTrue(check_password(password, encoded))
+
+                # test safe_summary():
+                summary = self.hasher.safe_summary(encoded)
+                self.assertTrue(isinstance(summary), SortedDict)
+                self.assertTrue(len(summary) >= 1)
 
                 # test to_orig, done here, to save a few hash-generations
                 encoded_orig = self.hasher.to_orig(encoded)
