@@ -18,14 +18,8 @@
 
 import unittest
 
-try:
-    from setuptools import Command
-    from setuptools import setup
-except ImportError:
-    import distribute_setup
-    distribute_setup.use_setuptools()
-    from setuptools import Command
-    from setuptools import setup
+from setuptools import Command
+from setuptools import setup
 
 from distutils.command.clean import clean as _clean
 
