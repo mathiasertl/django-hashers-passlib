@@ -57,10 +57,6 @@ class version(Command):
         print(get_version())
 
 
-class clean(_clean):
-    pass
-
-
 class test(Command):
     description = 'Run test suite.'
     user_options = [
@@ -103,7 +99,6 @@ information and documentation.""",
         'hashers_passlib',
     ],
     cmdclass={
-        'clean': clean,
         'test': test,
         'version': version,
     },
