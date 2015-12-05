@@ -28,7 +28,7 @@ from distutils.command.clean import clean as _clean
 
 name = 'django-hashers-passlib'
 url = 'https://github.com/mathiasertl/django-hashers-passlib'
-LATEST_RELEASE = '0.2'
+LATEST_RELEASE = '0.3'
 requires = [
     'passlib>=1.6.5',
     'Django>=1.8',
