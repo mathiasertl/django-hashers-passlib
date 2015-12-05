@@ -1,3 +1,8 @@
+0.3 (XX XXXXX XXXX)
+
+* Require Python3 >= 3.4.
+* Update passlib and bcrypt dependencies.
+
 0.2 (22 March 2014)
 
 * Remove distribute_setup.py.
