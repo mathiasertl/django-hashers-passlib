@@ -28,7 +28,6 @@ from passlib import hash
 
 from django.conf import settings
 from django.contrib.auth.hashers import check_password
-from django.contrib.auth.hashers import load_hashers
 from django.contrib.auth.hashers import make_password
 from django.test import TestCase
 from django.utils.datastructures import SortedDict
@@ -65,8 +64,6 @@ class TestMixin(object):
 
     def test_check(self):
         with self.settings(PASSWORD_HASHERS=[self.path, ]):
-            load_hashers(settings.PASSWORD_HASHERS)
-
             for password in PASSWORDS:
                 encoded = make_password(password)
                 self.assertTrue(check_password(password, encoded))
@@ -90,8 +87,6 @@ class TestConverterMixin(object):
 
     def test_base(self):
         with self.settings(PASSWORD_HASHERS=[self.hasher, ]):
-            load_hashers(settings.PASSWORD_HASHERS)
-
             for password in PASSWORDS:
                 orig = self.alt_hasher.encrypt(password)
                 conv = self.converter.from_orig(orig)
