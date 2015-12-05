@@ -1,4 +1,4 @@
 Django==1.6.2
-Sphinx==1.2.2
-passlib==1.6.2
-bcrypt==1.0.2
+Sphinx==1.3.3
+passlib==1.6.5
+bcrypt==2.0.0

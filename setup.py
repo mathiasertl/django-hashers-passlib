@@ -30,7 +30,7 @@ name = 'django-hashers-passlib'
 url = 'https://github.com/mathiasertl/django-hashers-passlib'
 LATEST_RELEASE = '0.2'
 requires = [
-    'passlib>=1.6.2',
+    'passlib>=1.6.5',
     'Django>=1.5',
 ]
 
