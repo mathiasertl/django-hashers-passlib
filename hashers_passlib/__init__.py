@@ -18,9 +18,10 @@
 
 from __future__ import unicode_literals
 
+from collections import OrderedDict
+
 from django.contrib.auth.hashers import BasePasswordHasher
 from django.contrib.auth.hashers import mask_hash
-from django.utils.datastructures import SortedDict
 from django.utils.translation import ugettext_noop as _
 
 _SETTINGS_MAPPING = (
@@ -96,7 +97,7 @@ class PasslibHasher(BasePasswordHasher):
         for key, value in parsed.items():
             data.append((_(key), value))
 
-        return SortedDict(data + to_append)
+        return OrderedDict(data + to_append)
 
 
 class PasslibCryptSchemeHasher(PasslibHasher):
