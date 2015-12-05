@@ -30,6 +30,7 @@ _SETTINGS_MAPPING = (
     (_('checksum'), 'hash', 6),
 )
 
+
 class PasslibHasher(BasePasswordHasher):
     """Base class for all passlib-based hashers."""
 
@@ -108,9 +109,9 @@ class PasslibCryptSchemeHasher(PasslibHasher):
         return '$%s' % encoded
 
 
-############################
-### Archaic Unix Schemes ###
-############################
+########################
+# Archaic Unix Schemes #
+########################
 class des_crypt(PasslibHasher):
     pass
 
@@ -127,9 +128,9 @@ class crypt16(PasslibHasher):
     pass
 
 
-#############################
-### Standard Unix Schemes ###
-#############################
+#########################
+# Standard Unix Schemes #
+#########################
 class md5_crypt(PasslibHasher):
     pass
 
@@ -150,9 +151,9 @@ class sha512_crypt(PasslibHasher):
     pass
 
 
-###################################
-### Other Modular Crypt Schemes ###
-###################################
+###############################
+# Other Modular Crypt Schemes #
+###############################
 class apr_md5_crypt(PasslibCryptSchemeHasher):
     handler = 'apr_md5_crypt'
     algorithm = 'apr1'
@@ -196,9 +197,9 @@ class scram(PasslibCryptSchemeHasher):
 
 # bsd_nthash is provided by a converter
 
-#############################
-### Standard LDAP schemes ###
-#############################
+#########################
+# Standard LDAP schemes #
+#########################
 # ldap_md5 is provided by a converter
 # ldap_sha1 is provided by a converter
 class ldap_salted_md5(PasslibHasher):
@@ -212,9 +213,9 @@ class ldap_salted_sha1(PasslibHasher):
 # ldap_{crypt} provided by a converter
 # ldap_plaintext makes no sense to support
 
-#################################
-### Non-Standard LDAP Schemes ###
-#################################
+#############################
+# Non-Standard LDAP Schemes #
+#############################
 # ldap_hex_md5 is provided by a converter
 # ldap_hex_sha1 is provided by a converter
 # ldap_pbkdf2_{digest} is provided by a converter
@@ -228,9 +229,10 @@ class fshp(PasslibHasher):
 
 # roundup_plaintext makes no sense to support
 
-###########################
-### SQL Database Hashes ###
-###########################
+
+#######################
+# SQL Database Hashes #
+#######################
 class mssql2000(PasslibHasher):
     pass
 
@@ -249,13 +251,14 @@ class mysql41(PasslibHasher):
 # postgres_md5 is incompatible (requires username for hash)
 # oracle10 is incompatible (requires username for hash)
 
+
 class oracle11(PasslibHasher):
     pass
 
 
-#########################
-### MS Windows Hashes ###
-#########################
+#####################
+# MS Windows Hashes #
+#####################
 class lmhash(PasslibHasher):
     pass
 
@@ -267,9 +270,9 @@ class nthash(PasslibHasher):
 # msdcc2 is incompatible (requires username for hash)
 
 
-####################
-### Other hashes ###
-####################
+################
+# Other hashes #
+################
 class cisco_pix(PasslibHasher):
     pass
 
@@ -278,6 +281,7 @@ class cisco_type7(PasslibHasher):
     pass
 
 # django_{digest} not supported, for obvious reasons
+
 
 class grub_pbkdf2_sha512(PasslibHasher):
     pass
@@ -288,6 +292,7 @@ class hex_md4(PasslibHasher):
 
 # hex_md5 is already supported by Django
 # hex_sha1 is already supported by Django
+
 
 class hex_sha256(PasslibHasher):
     pass
