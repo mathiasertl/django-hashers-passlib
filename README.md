@@ -204,8 +204,8 @@ Some hashes are unsupported because they require the username to generate the
 salt: 
 [postgres_md5](https://pythonhosted.org/passlib/lib/passlib.hash.postgres_md5.html),
 [oracle10](https://pythonhosted.org/passlib/lib/passlib.hash.oracle10.html),
-[msdcc](https://pythonhosted.org/passlib/lib/passlib.hash.msdcc.html),
-[msdcc2](https://pythonhosted.org/passlib/lib/passlib.hash.msdcc2.html)
+[msdcc](https://pythonhosted.org/passlib/lib/passlib.hash.msdcc.html) and
+[msdcc2](https://pythonhosted.org/passlib/lib/passlib.hash.msdcc2.html).
 
 How it works internally
 -----------------------
