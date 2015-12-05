@@ -21,6 +21,8 @@ from __future__ import unicode_literals
 import os
 import sys
 
+from collections import OrderedDict
+
 sys.path.insert(0, 'example')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'example.settings'
 
@@ -30,7 +32,6 @@ from django.conf import settings
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.hashers import make_password
 from django.test import TestCase
-from django.utils.datastructures import SortedDict
 
 import hashers_passlib
 from hashers_passlib import converters
@@ -70,7 +71,7 @@ class TestMixin(object):
 
                 # test safe_summary():
                 summary = self.hasher.safe_summary(encoded)
-                self.assertTrue(isinstance(summary, SortedDict))
+                self.assertTrue(isinstance(summary, OrderedDict))
                 self.assertTrue(len(summary) >= 1)
 
                 # test to_orig, done here, to save a few hash-generations
