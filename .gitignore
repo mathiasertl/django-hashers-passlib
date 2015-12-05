@@ -12,3 +12,4 @@
 /venv/
 /testproject/
 Makefile
+/pip-selfcheck.json
