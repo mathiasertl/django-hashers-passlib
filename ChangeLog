@@ -1,4 +1,4 @@
-0.2 (XX XXXX XXX)
+0.2 (22 March 2014)
 
 * Remove distribute_setup.py.
 * Implement a generic safe_summary method for all hashers.
