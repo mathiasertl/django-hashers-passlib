@@ -236,6 +236,6 @@ one of several ways:
    we provide converters in this case.
 4. A few hashes already almost fit in Djangos scheme and have a reasonably
    unique identifier, they just have the leading `$` stripped.
-5. All other hashes (which is the vast majority!) just have `<identifier>$
+5. All other hashes (which is the vast majority!) just have `<identifier>$`
    prepended. This is the same approach as what Django does with e.g. bcrypt
    hashes.
