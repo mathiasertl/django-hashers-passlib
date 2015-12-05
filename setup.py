@@ -31,7 +31,7 @@ url = 'https://github.com/mathiasertl/django-hashers-passlib'
 LATEST_RELEASE = '0.2'
 requires = [
     'passlib>=1.6.5',
-    'Django>=1.5',
+    'Django>=1.8',
 ]
 
 def get_version():

@@ -1,6 +1,7 @@
 0.3 (XX XXXXX XXXX)
 
 * Require Python3 >= 3.4.
+* Depend on Django >= 1.8.
 * Update passlib and bcrypt dependencies.
 
 0.2 (22 March 2014)
