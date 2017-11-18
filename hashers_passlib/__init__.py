@@ -72,7 +72,13 @@ class PasslibHasher(BasePasswordHasher):
             kwargs['salt'] = salt
 
         kwargs.update(getattr(settings, 'PASSLIB_KEYWORDS', {}).get(self.hasher.name, {}))
-        return self.from_orig(self.hasher.using(**kwargs).encrypt(password))
+
+        if hasattr(self.hasher, 'using'):
+            encoded = self.hasher.using(**kwargs).encrypt(password)
+        else:  # passlib 1.6 does not have 'using'
+            encoded = self.hasher.encrypt(password, **kwargs)
+
+        return self.from_orig(encoded)
 
     def from_orig(self, hash):
         return '%s$%s' % (self.algorithm, hash)
