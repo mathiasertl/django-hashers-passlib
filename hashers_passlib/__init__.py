@@ -309,7 +309,7 @@ class hex_sha512(PasslibHasher):
 # Hashers added in 1.7.1 #
 ##########################
 
-class argon2(PasslibCryptSchemeHasher):
+class argon2i(PasslibCryptSchemeHasher):
     """
 
     This hasher requires that you install the ``argon-cffi`` package.
@@ -318,7 +318,8 @@ class argon2(PasslibCryptSchemeHasher):
 
     .. versionadded:: 0.4
     """
-    pass
+    handler = 'argon2'
+    algorithm = 'argon2i'
 
 
 class scrypt(PasslibCryptSchemeHasher):
