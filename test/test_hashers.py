@@ -236,13 +236,13 @@ class hex_sha512_test(TestCase, TestMixin):
 
 
 @skipUnless(parse_version(passlib.__version__) >= SetuptoolsVersion('1.7'),
-            'argon2 is not supported in passlib 1.6')
-class argon2_test(TestConverterMixin, TestCase):
+            'argon2 is not supported in passlib<<1.7')
+class argon2_test(TestCase, TestMixin):
     hasher = hashers_passlib.argon2()
 
 
 @skipUnless(parse_version(passlib.__version__) >= SetuptoolsVersion('1.7'),
-            'scrypt is not supported in passlib 1.6')
+            'scrypt is not supported in passlib<<1.7')
 class scrypt_test(TestCase, TestMixin):
     hasher = hashers_passlib.argon2()
 
