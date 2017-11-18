@@ -7,11 +7,14 @@ python:
   - "nightly"
 install:
   - pip install -r requirements.txt -r requirements-dev.txt
-  - pip install Django$DJANGO_VERSION
+  - pip install Django==$DJANGO_VERSION passlib==$PASSLIB_VERSION
 env:
-    - DJANGO_VERSION=">=1.11"
-    - DJANGO_VERSION="<1.11"
-    - DJANGO_VERSION="<1.9"
+    - DJANGO_VERSION="1.11.7" PASSLIB_VERSION="1.6.5"
+    - DJANGO_VERSION="1.10.8" PASSLIB_VERSION="1.6.5"
+    - DJANGO_VERSION="1.8.18" PASSLIB_VERSION="1.6.5"
+    - DJANGO_VERSION="1.11.7" PASSLIB_VERSION="1.7.1"
+    - DJANGO_VERSION="1.10.8" PASSLIB_VERSION="1.7.1"
+    - DJANGO_VERSION="1.8.18" PASSLIB_VERSION="1.7.1"
 script:
   - python setup.py style
   - python setup.py check
