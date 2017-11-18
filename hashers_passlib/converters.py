@@ -16,10 +16,10 @@
 # You should have received a copy of the GNU General Public License along with
 # django-hashers-passlib.  If not, see <http://www.gnu.org/licenses/>.
 
-from base64 import b64encode
 from base64 import b64decode
-from binascii import unhexlify
+from base64 import b64encode
 from binascii import hexlify
+from binascii import unhexlify
 
 
 class Converter(object):
