@@ -1,4 +1,4 @@
-0.4 (TBR)
+0.4 (19 November 2017)
 
 * Support passlib 1.7.
 * Add argon2 and scrypt hashers.
