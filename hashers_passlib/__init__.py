@@ -303,3 +303,31 @@ class hex_sha256(PasslibHasher):
 
 class hex_sha512(PasslibHasher):
     pass
+
+
+##########################
+# Hashers added in 1.7.1 #
+##########################
+
+class argon2(PasslibCryptSchemeHasher):
+    """
+
+    This hasher requires that you install the ``argon-cffi`` package.
+
+    .. seealso:: https://passlib.readthedocs.io/en/stable/lib/passlib.hash.argon2.html
+
+    .. versionadded:: 0.4
+    """
+    pass
+
+
+class scrypt(PasslibCryptSchemeHasher):
+    """
+
+    This hasher requires that you install the ``scrypt`` package.
+
+    .. seealso:: https://passlib.readthedocs.io/en/stable/lib/passlib.hash.scrypt.html
+
+    .. versionadded:: 0.4
+    """
+    pass
