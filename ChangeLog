@@ -7,6 +7,7 @@
 * Integrate with Travis to run test-suite with Python 2.7, 3.4+ and all
   currently supported versions of Django.
 * Update python version classifiers in setup.py.
+* Also upload wheels.
 
 0.3 (05 December 2015)
 
