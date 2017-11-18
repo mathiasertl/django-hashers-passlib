@@ -17,6 +17,7 @@ from __future__ import unicode_literals
 
 from collections import OrderedDict
 
+from django.conf import settings
 from django.contrib.auth.hashers import BasePasswordHasher
 from django.contrib.auth.hashers import mask_hash
 from django.utils.translation import ugettext_noop as _
@@ -70,6 +71,7 @@ class PasslibHasher(BasePasswordHasher):
         if salt is not None:
             kwargs['salt'] = salt
 
+        kwargs.update(getattr(settings, 'PASSLIB_KEYWORDS', {}).get(self.hasher.name, {}))
         return self.from_orig(self.hasher.using(**kwargs).encrypt(password))
 
     def from_orig(self, hash):

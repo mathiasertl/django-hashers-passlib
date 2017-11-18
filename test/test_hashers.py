@@ -178,6 +178,16 @@ class pbkdf2_sha256_test(TestCase, TestMixin):
         encoded = self.hasher.encode('foobar', rounds=64)
         self.assertEqual(self.hasher.safe_summary(encoded)['iterations'], 64)
 
+        kwargs = {
+            'pbkdf2_sha256': {
+                'rounds': 64,
+            },
+        }
+
+        with self.settings(PASSWORD_HASHERS=[self.path, ], PASSLIB_KEYWORDS=kwargs):
+            encoded = self.hasher.encode('foobar')
+        self.assertEqual(self.hasher.safe_summary(encoded)['iterations'], 64)
+
 
 class pbkdf2_sha512_test(TestCase, TestMixin):
     hasher = hashers_passlib.pbkdf2_sha512()
