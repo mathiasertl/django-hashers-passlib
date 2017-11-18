@@ -16,15 +16,10 @@
 # You should have received a copy of the GNU General Public License along with
 # django-hashers-passlib.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
 import unittest
 
 from setuptools import Command
 from setuptools import setup
-from subprocess import PIPE
-from subprocess import Popen
-
-from distutils.command.clean import clean as _clean
 
 name = 'django-hashers-passlib'
 url = 'https://github.com/mathiasertl/django-hashers-passlib'
@@ -71,6 +66,7 @@ class test(Command):
             case = getattr(test_hashers, '%s_test' % self.algo)
             suite = loader.loadTestsFromTestCase(case)
         unittest.TextTestRunner(verbosity=1).run(suite)
+
 
 setup(
     name=name,
