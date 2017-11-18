@@ -59,7 +59,9 @@ class PasslibHasher(BasePasswordHasher):
 
     @property
     def hasher(self):
-        return getattr(self._load_library(), self.get_handler())
+        if self._hasher is None:
+            self._hasher = getattr(self._load_library(), self.get_handler())
+        return self._hasher
 
     def verify(self, password, encoded):
         return self.hasher.verify(password, self.to_orig(encoded))
