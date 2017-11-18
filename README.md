@@ -24,12 +24,39 @@ and 3.4 or later.
 Getting started
 ---------------
 
-This module supports almost every hash supported by passlib (some must be converted at first - see below), but
-hashes must be slightly modified in order to fit into Djangos hash encoding scheme (see "How it works
-interally" below for details).  Every hasher class is named like the module provided by passlib and every hash
-has a `from_orig()` and `to_orig()` method, which allows to import/export hashes. So importing a user from a
-different system is simply a matter of calling `from_orig()` of the right hasher and save that to the
-`password` field of Djangos `User` model. Here is a simple example:
+This module supports almost every hash supported by passlib (some must be converted at first - see below). If
+you want your Django project app to understand hashes provided by passlib, simply add the hashers to the
+(PASSWORD_HASHERS)[https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-PASSWORD_HASHERS] setting.
+Note that the first value is the default hasher, so if you want to store new user passwords in one of these
+hashes, prepend the hash to the list:
+
+```
+PASSWORD_HASHERS = [
+    # new user passwords should be stored in the phpass format
+    'hashers_passlib.phpass',
+
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    # ... other Django hashers
+
+    # We also want to add some users from say mssql2000 (who wouldn't?)
+    'hashers_passlib.mssql2000'
+]
+```
+
+Every module in passlib has hasher with the same name.
+
+Import/Export
+-------------
+
+Django dictates a scheme for storing passwords (see [How Django stores
+passwords](https://docs.djangoproject.com/en/dev/topics/auth/passwords/#auth-password-storage). Some hashes
+are stored simply by prefixing the hash name, others already almost fit into the scheme and only their leading
+`$` is stripped.
+
+If you want to import hashes from another application into Djangos hash encoding scheme (see "How it works
+interally" below for details), every hasher has a `from_orig()` and `to_orig()` method, which allows to
+import/export hashes. So importing a user from a different system is simply a matter of calling `from_orig()`
+of the right hasher and save that to the `password` field of Djangos `User` model. Here is a simple example:
 
 ```python
 # Lets import a phpass (WordPress, phpBB3, ...) hash. This assumes that you have 'hashers_passlib.phpass' in
@@ -54,9 +81,10 @@ for username, hash in raw_hashes.items():
     user.save()
 ```
 
-The users "joe" and "jane" can now login with their old usernames and passwords. If you want to export users
-with a phpass hash to a WordPress database again, you can simple get the original hashes back (for simplicity,
-we just print everything to stdout here):
+The users "joe" and "jane" can now login with their old usernames and passwords. 
+
+If you want to export users with a phpass hash to a WordPress database again, you can simple get the original
+hashes back (for simplicity, we just print everything to stdout here):
 
 ```python
 from django.contrib.auth import get_user_model
