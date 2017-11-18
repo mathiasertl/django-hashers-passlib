@@ -171,6 +171,13 @@ class pbkdf2_sha1_test(TestCase, TestMixin):
 class pbkdf2_sha256_test(TestCase, TestMixin):
     hasher = hashers_passlib.pbkdf2_sha256()
 
+    def test_settings(self):
+        encoded = self.hasher.encode('foobar', rounds=32)
+        self.assertEqual(self.hasher.safe_summary(encoded)['iterations'], 32)
+
+        encoded = self.hasher.encode('foobar', rounds=64)
+        self.assertEqual(self.hasher.safe_summary(encoded)['iterations'], 64)
+
 
 class pbkdf2_sha512_test(TestCase, TestMixin):
     hasher = hashers_passlib.pbkdf2_sha512()

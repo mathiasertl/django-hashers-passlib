@@ -66,8 +66,11 @@ class PasslibHasher(BasePasswordHasher):
     def verify(self, password, encoded):
         return self.hasher.verify(password, self.to_orig(encoded))
 
-    def encode(self, password, salt=None):
-        return self.from_orig(self.hasher.encrypt(password))
+    def encode(self, password, salt=None, **kwargs):
+        if salt is not None:
+            kwargs['salt'] = salt
+
+        return self.from_orig(self.hasher.using(**kwargs).encrypt(password))
 
     def from_orig(self, hash):
         return '%s$%s' % (self.algorithm, hash)
