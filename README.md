@@ -1,18 +1,15 @@
 `django-hashers-passlib` aims to make password hashing schemes provided by
-[passlib](https://passlib.readthedocs.io/en/stable/) usable in
-[Django](https://www.djangoproject.com/). Unlike passlibs
+[passlib](https://passlib.readthedocs.io/en/stable/) usable in [Django](https://www.djangoproject.com/).
+Unlike passlibs
 [passlib.ext.django](https://pythonhosted.org/passlib/lib/passlib.ext.django.html#module-passlib.ext.django),
 it does not replace Djangos [password management
-system](https://docs.djangoproject.com/en/dev/topics/auth/passwords/) but
-provides standard hashers that can be added to the `PASSWORD_HASHERS` setting
-for hash schemes provided by passlib.
+system](https://docs.djangoproject.com/en/dev/topics/auth/passwords/) but provides standard hashers that can
+be added to the `PASSWORD_HASHERS` setting for hash schemes provided by passlib.
 
 There are two primary usecases for this module:
 
-1. You want to import password hashes from an existing application into your
-   Django database.
-2. You want to export password hashes to a different application in the
-   future.
+1. You want to import password hashes from an existing application into your Django database.
+2. You want to export password hashes to a different application in the future.
 
 Installation
 ------------
@@ -21,24 +18,22 @@ This module is available via pip, install it with
 
     pip install django-hashers-passlib
 
-It requires Django >= 1.8 (earlier versions might work) and passlib >= 1.6.2.
-It supports Python versions 2.7 and 3.4 or later.
+It requires Django >= 1.8 (earlier versions might work) and passlib >= 1.6.2. It supports Python versions 2.7
+and 3.4 or later.
 
 Getting started
 ---------------
 
-This module supports almost every hash supported by passlib (some must be
-converted at first - see below), but hashes must be slightly modified in order
-to fit into Djangos hash encoding scheme (see "How it works interally" below
-for details).  Every hasher class is named like the module provided by passlib
-and every hash has a `from_orig()` and `to_orig()` method, which allows to
-import/export hashes. So importing a user from a different system is simply a
-matter of calling `from_orig()` of the right hasher and save that to the
+This module supports almost every hash supported by passlib (some must be converted at first - see below), but
+hashes must be slightly modified in order to fit into Djangos hash encoding scheme (see "How it works
+interally" below for details).  Every hasher class is named like the module provided by passlib and every hash
+has a `from_orig()` and `to_orig()` method, which allows to import/export hashes. So importing a user from a
+different system is simply a matter of calling `from_orig()` of the right hasher and save that to the
 `password` field of Djangos `User` model. Here is a simple example:
 
 ```python
-# Lets import a phpass (WordPress, phpBB3, ...) hash. This assumes that you
-# have 'hashers_passlib.phpass' in your PASSWORD_HASHERS setting.
+# Lets import a phpass (WordPress, phpBB3, ...) hash. This assumes that you have 'hashers_passlib.phpass' in
+# your PASSWORD_HASHERS setting.
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import get_hasher
@@ -59,10 +54,9 @@ for username, hash in raw_hashes.items():
     user.save()
 ```
 
-The users "joe" and "jane" can now login with their old usernames and
-passwords. If you want to export users with a phpass hash to a WordPress
-database again, you can simple get the original hashes back (for simplicity, we
-just print everything to stdout here):
+The users "joe" and "jane" can now login with their old usernames and passwords. If you want to export users
+with a phpass hash to a WordPress database again, you can simple get the original hashes back (for simplicity,
+we just print everything to stdout here):
 
 ```python
 from django.contrib.auth import get_user_model
@@ -80,19 +74,17 @@ for user in User.objects.filter(password__startswith='phpass$'):
 Supported hashes
 ----------------
 
-This module provides hashers for most hash schemes provided by passlib - but
-remember you have to import them using the hashers `from_orig()` method first
-to be useable. Some have to be be converted first (see below), and only a few
-minor old hashes are not supported. All password hashers have the same class
-name as the passlib hasher they wrap and are located in the `hashers_passlib`
-module. So to enable support for e.g. `sha1_crypt` hashes, add
-`hashers_passlib.sha1_crypt` to your `PASSWORD_HASHERS` Django setting.
+This module provides hashers for most hash schemes provided by passlib - but remember you have to import them
+using the hashers `from_orig()` method first to be useable. Some have to be be converted first (see below),
+and only a few minor old hashes are not supported. All password hashers have the same class name as the
+passlib hasher they wrap and are located in the `hashers_passlib` module. So to enable support for e.g.
+`sha1_crypt` hashes, add `hashers_passlib.sha1_crypt` to your `PASSWORD_HASHERS` Django setting.
 
-**WARNING:** Some hashes are longer then the 128 characters provided by the
-standard User model provided by Django. You have to specify a [custom user
-model](https://docs.djangoproject.com/en/dev/topics/auth/customizing/#specifying-a-custom-user-model)
-with at least 256 characters for `hex_sha512`, `pbkdf2_sha512`, `scram` and 
-`sha512_crypt` or at least 384 characters for `grub_pbkdf2_sha512`.
+**WARNING:** Some hashes are longer then the 128 characters provided by the standard User model provided by
+Django. You have to specify a [custom user
+model](https://docs.djangoproject.com/en/dev/topics/auth/customizing/#specifying-a-custom-user-model) with at
+least 256 characters for `hex_sha512`, `pbkdf2_sha512`, `scram` and `sha512_crypt` or at least 384 characters
+for `grub_pbkdf2_sha512`.
 
 The following algorithms are supported: 
 [des_crypt](https://pythonhosted.org/passlib/lib/passlib.hash.des_crypt.html),
@@ -128,35 +120,28 @@ The following algorithms are supported:
 and
 [hex_{md4,sha256,sha512}](https://pythonhosted.org/passlib/lib/passlib.hash.hex_digests.html).
 
-Most hashes will be saved with a simple prefix `<algorithm>$`, where
-"&lt;algorithm&gt;" is the name of the hasher. The only exception are a few
-hashes (`apr_md5_crypt`, `bcrypt_sha256`, `pbkdf2_<digest>`, `scram`) that
-already almost fit into Djangos hash scheme, where only the leading `$` is
-stripped.
+Most hashes will be saved with a simple prefix `<algorithm>$`, where "&lt;algorithm&gt;" is the name of the
+hasher. The only exception are a few hashes (`apr_md5_crypt`, `bcrypt_sha256`, `pbkdf2_<digest>`, `scram`)
+that already almost fit into Djangos hash scheme, where only the leading `$` is stripped.
 
-**NOTE:** Some hashes (`bcrypt_sha256`, `pbkdf2_<digest>`, ...) look very
-similar to what Django provides but are actually distinct algorithms.
+**NOTE:** Some hashes (`bcrypt_sha256`, `pbkdf2_<digest>`, ...) look very similar to what Django provides but
+are actually distinct algorithms.
 
 Hashes supported via conversion
 -------------------------------
 
-Some hash schemes really are just a minor transformation of a different hash
-scheme. For example, the
-[bsd_nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.bsd_nthash)
-is just a regular
-[nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.nthash)
-with `$3$$` prepended and the
-[ldap_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_md5)
-has is just a plain MD5 hash with `{MD5}` prepended that is already supported
-by Django. 
+Some hash schemes really are just a minor transformation of a different hash scheme. For example, the
+[bsd_nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.bsd_nthash) is just a
+regular [nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html#passlib.hash.nthash) with
+`$3$$` prepended and the
+[ldap_md5](https://pythonhosted.org/passlib/lib/passlib.hash.ldap_std.html#passlib.hash.ldap_md5) has is just
+a plain MD5 hash with `{MD5}` prepended that is already supported by Django. 
 
-In order to avoid code duplication, this module does not provide password
-hashers for these schemes, but converters under `hashers_passlib.converters`.
-Converted hashes are either readable by a different hasher or by a hasher
-provided by Django.
+In order to avoid code duplication, this module does not provide password hashers for these schemes, but
+converters under `hashers_passlib.converters`.  Converted hashes are either readable by a different hasher or
+by a hasher provided by Django.
 
-If you want to import `bsd_nthash` hashes, you can either manually strip the
-identifier or use the converter:
+If you want to import `bsd_nthash` hashes, you can either manually strip the identifier or use the converter:
 
 ```python
 # Lets import bsd_nthash hashes as plain nthash hashes. This assumes you have
@@ -200,8 +185,7 @@ From | To | Notes
 Unsupported hashes
 ------------------
 
-Some hashes are unsupported because they require the username to generate the
-salt: 
+Some hashes are unsupported because they require the username to generate the salt: 
 [postgres_md5](https://pythonhosted.org/passlib/lib/passlib.hash.postgres_md5.html),
 [oracle10](https://pythonhosted.org/passlib/lib/passlib.hash.oracle10.html),
 [msdcc](https://pythonhosted.org/passlib/lib/passlib.hash.msdcc.html) and
@@ -210,32 +194,27 @@ salt:
 How it works internally
 -----------------------
 
-Djangos password management system stores passwords in a format that is very
-similar but still distinct from what passlib calls [Modular Crypt
+Djangos password management system stores passwords in a format that is very similar but still distinct from
+what passlib calls [Modular Crypt
 Format](https://pythonhosted.org/passlib/modular_crypt_format.html#modular-crypt-format):
 
     <algorithm>$<content>
 
-... where "&lt;algorithm&gt;" is the identifier used to select what hasher
-class should handle the hash. The only difference to the Modular Crypt Format
-is that it misses the leading `$` sign. Note that the `$` in the middle is a
-mandatory delimiter.
+... where "&lt;algorithm&gt;" is the identifier used to select what hasher class should handle the hash. The
+only difference to the Modular Crypt Format is that it misses the leading `$` sign. Note that the `$` in the
+middle is a mandatory delimiter.
 
-This module modifies the hash schemes so they fit into this scheme before
-storing them in the database. The modifications are absolutely reversible - in
-fact this module depends on it being reversible, our hashers won't work any
-other way. Depending on the original hash scheme, the hashes are modified in
-one of several ways:
+This module modifies the hash schemes so they fit into this scheme before storing them in the database. The
+modifications are absolutely reversible - in fact this module depends on it being reversible, our hashers
+won't work any other way. Depending on the original hash scheme, the hashes are modified in one of several
+ways:
 
-1. Some old and insecure hashes require the username to encode the hash.
-   Djangos hashers don't receive the username, so they are not compatible and
-   not supported by this module.
-2. Some of passlibs hashes are already supported by Django and the
-   functionality is not duplicated here.
-3. Some hash schemes are really just minor modifications of different schemes,
-   we provide converters in this case.
-4. A few hashes already almost fit in Djangos scheme and have a reasonably
-   unique identifier, they just have the leading `$` stripped.
-5. All other hashes (which is the vast majority!) just have `<identifier>$`
-   prepended. This is the same approach as what Django does with e.g. bcrypt
-   hashes.
+1. Some old and insecure hashes require the username to encode the hash.  Djangos hashers don't receive the
+   username, so they are not compatible and not supported by this module.
+2. Some of passlibs hashes are already supported by Django and the functionality is not duplicated here.
+3. Some hash schemes are really just minor modifications of different schemes, we provide converters in this
+   case.
+4. A few hashes already almost fit in Djangos scheme and have a reasonably unique identifier, they just have
+   the leading `$` stripped.
+5. All other hashes (which is the vast majority!) just have `<identifier>$` prepended. This is the same
+   approach as what Django does with e.g. bcrypt hashes.
