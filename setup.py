@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License along with django-hashers-passlib. If not,
 # see <http://www.gnu.org/licenses/>.
 
+import subprocess
+import sys
 import unittest
 
 from setuptools import Command
@@ -39,6 +41,30 @@ class version(Command):
 
     def run(self):
         print(LATEST_RELEASE)
+
+
+class style(Command):
+    descriptions = 'Run syntax and style checks.'
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        flake = ['flake8', 'setup.py', 'hashers_passlib/']
+        print(' '.join(flake))
+        code = subprocess.call(flake)
+        if code != 0:
+            sys.exit(code)
+
+        isort = ['isort', '--check-only', '--diff', '-rc', 'setup.py', 'hashers_passlib/']
+        print(' '.join(isort))
+        code = subprocess.call(isort)
+        if code != 0:
+            sys.exit(code)
 
 
 class test(Command):
@@ -81,6 +107,7 @@ Please see https://github.com/mathiasertl/django-hashers-passlib for more inform
         'hashers_passlib',
     ],
     cmdclass={
+        'style': style,
         'test': test,
         'version': version,
     },
