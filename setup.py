@@ -34,14 +34,6 @@ requires = [
     'Django>=1.8',
 ]
 
-def get_version():
-    if os.path.exists('.git'):  # get from git
-        cmd = ['git', 'describe', 'master']
-        p = Popen(cmd, stdout=PIPE)
-        return p.communicate()[0].decode('utf-8').strip()
-    else:
-        return LATEST_RELEASE
-
 
 class version(Command):
     description = "Print version and exit."
@@ -54,7 +46,7 @@ class version(Command):
         pass
 
     def run(self):
-        print(get_version())
+        print(LATEST_RELEASE)
 
 
 class test(Command):
@@ -82,7 +74,7 @@ class test(Command):
 
 setup(
     name=name,
-    version=str(get_version()),
+    version=LATEST_RELEASE,
     description='Django hashers using passlib',
     long_description="""This library provides password hashers for the hash
 schemes provided by passlib for Djangos password hashing framework. Unlike
@@ -94,7 +86,6 @@ information and documentation.""",
     author='Mathias Ertl',
     author_email='mati@er.tl',
     url=url,
-#    download_url='https://python.restauth.net/download/',
     packages=[
         'hashers_passlib',
     ],
