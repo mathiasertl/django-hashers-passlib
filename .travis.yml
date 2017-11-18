@@ -8,4 +8,6 @@ python:
 install:
   - pip install -r requirements.txt
 script:
+  - python setup.py style
+  - python setup.py check
   - python setup.py test
