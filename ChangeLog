@@ -2,6 +2,7 @@
 
 * Support passlib 1.7.
 * Add argon2 and scrypt hashers.
+* Make hash parameters configurable via the PASSLIB_KEYWORDS setting.
 * Add VERSION and get_version() similar to Django.
 * Integrate with Travis to run test-suite with Python 2.7, 3.4+ and all
   currently supported versions of Django.

@@ -45,6 +45,19 @@ PASSWORD_HASHERS = [
 
 Almost every module in passlib has hasher with the same name, see "Supported hashes" below for full list.
 
+You can also configure default parameters for different hash algorithms, for example to configure a different
+number of rounds for `pbkdf2_sha256`:
+
+```
+PASSLIB_KEYWORDS = {
+    'pbkdf2_sha256': {
+        'rounds': 32000,
+    },
+}
+```
+
+The documentation for passlib contains a list of available parameters.
+
 Import/Export
 -------------
 
