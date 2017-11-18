@@ -16,7 +16,6 @@
 import os
 import subprocess
 import sys
-import unittest
 
 from setuptools import Command
 from setuptools import setup
@@ -82,15 +81,16 @@ class test(Command):
 
     def run(self):
         os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'test.django_settings')
-        from test import test_hashers
+        #sys.path.insert(0, '.')
+        import django
+        django.setup()
 
-        loader = unittest.TestLoader()
-        if self.algo is None:
-            suite = loader.loadTestsFromModule(test_hashers)
-        else:
-            case = getattr(test_hashers, '%s_test' % self.algo)
-            suite = loader.loadTestsFromTestCase(case)
-        unittest.TextTestRunner(verbosity=1).run(suite)
+        from django.core.management import call_command
+        suite = 'test'
+        if self.algo is not None:
+            suite = 'test.test_hashers.%s_test' % self.algo
+
+        call_command('test', suite)
 
 
 setup(
