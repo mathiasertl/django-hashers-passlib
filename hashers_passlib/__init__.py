@@ -28,11 +28,11 @@ _SETTINGS_MAPPING = (
     (_('checksum'), 'hash', 6),
 )
 
-VERSION = (0, 4, 'dev')
+VERSION = (0, 4, )
 
 
 def get_version():
-    return '.'.join(VERSION)
+    return '.'.join([str(t) for t in VERSION])
 
 
 class PasslibHasher(BasePasswordHasher):
