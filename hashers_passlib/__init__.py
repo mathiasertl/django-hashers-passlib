@@ -27,6 +27,12 @@ _SETTINGS_MAPPING = (
     (_('checksum'), 'hash', 6),
 )
 
+VERSION = (0, 4, 'dev')
+
+
+def get_version():
+    return '.'.join(VERSION)
+
 
 class PasslibHasher(BasePasswordHasher):
     """Base class for all passlib-based hashers."""
