@@ -25,6 +25,7 @@ from pkg_resources import SetuptoolsVersion
 
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
 from django.test import TestCase
 
 import hashers_passlib
@@ -79,6 +80,22 @@ class TestMixin(object):
 
                 back = self.hasher.from_orig(encoded_orig)
                 self.assertEqual(encoded, back)
+
+    def test_user_model(self):
+        password = 'foobar-random-example'
+        user = User.objects.create(username='foobar')
+
+        with self.settings(PASSWORD_HASHERS=[self.path, ]):
+            user.set_password(password)
+            user.save()
+
+            self.assertTrue(user.check_password(password))
+
+        # this is False because no hasher is available
+        self.assertFalse(user.check_password(password))
+
+        with self.settings(PASSWORD_HASHERS=[self.path, ]):
+            self.assertTrue(user.check_password(password))
 
 
 class TestConverterMixin(object):
