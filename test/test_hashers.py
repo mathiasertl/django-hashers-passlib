@@ -35,18 +35,19 @@ PASSWORDS = [
     '1uzPU',
     'oe331f',
     'qBcP47',
-#    'D4i19w',
-#    'e8qBbIA',
-#    'vzCXzq8',
-#    '7xEmLNYW',
-#    'HeVCzQ3I',
-#    'mMIJzMuAo',
-#    '4gjjrcCfm',
-#    '3Asa788x6g',
-#    'AGwKzVP1SC',
-#    'CWwYP880G4',
-#    'RK8SMEmv0s',
+    # 'D4i19w',
+    # 'e8qBbIA',
+    # 'vzCXzq8',
+    # '7xEmLNYW',
+    # 'HeVCzQ3I',
+    # 'mMIJzMuAo',
+    # '4gjjrcCfm',
+    # '3Asa788x6g',
+    # 'AGwKzVP1SC',
+    # 'CWwYP880G4',
+    # 'RK8SMEmv0s',
 ]
+
 
 class TestMixin(object):
     @property
@@ -253,6 +254,7 @@ class ldap_sha1_test(TestConverterMixin, TestCase):
 class ldap_hex_md5_test(TestConverterMixin, TestCase):
     hasher = 'django.contrib.auth.hashers.UnsaltedMD5PasswordHasher'
     converter = converters.ldap_hex_md5()
+
 
 class ldap_hex_sha1_test(TestConverterMixin, TestCase):
     hasher = 'django.contrib.auth.hashers.UnsaltedSHA1PasswordHasher'
