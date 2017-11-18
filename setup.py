@@ -1,20 +1,17 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of django-hashers-passlib
-# (https://github.com/mathiasertl/django-hashers-passlib).
+# This file is part of django-hashers-passlib (https://github.com/mathiasertl/django-hashers-passlib).
 #
-# django-hashers-passlib is free software: you can redistribute it and/or
-# modify it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or (at your
-# option) any later version.
+# django-hashers-passlib is free software: you can redistribute it and/or modify it under the terms of the GNU
+# General Public License as published by the Free Software Foundation, either version 3 of the License, or (at
+# your option) any later version.
 #
-# django-hashers-passlib is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-# more details.
+# django-hashers-passlib is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
+# License for more details.
 #
-# You should have received a copy of the GNU General Public License along with
-# django-hashers-passlib.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License along with django-hashers-passlib. If not,
+# see <http://www.gnu.org/licenses/>.
 
 import unittest
 
@@ -72,13 +69,11 @@ setup(
     name=name,
     version=LATEST_RELEASE,
     description='Django hashers using passlib',
-    long_description="""This library provides password hashers for the hash
-schemes provided by passlib for Djangos password hashing framework. Unlike
-passlibs ``passlib.apps.django``, it does not replace Djangos password hashing
-framework but adds additional hashers to its built in framework.
+    long_description="""This library provides password hashers for the hash schemes provided by passlib for
+Djangos password hashing framework. Unlike passlibs ``passlib.apps.django``, it does not replace Djangos
+password hashing framework but adds additional hashers to its built in framework.
 
-Please see https://github.com/mathiasertl/django-hashers-passlib for more
-information and documentation.""",
+Please see https://github.com/mathiasertl/django-hashers-passlib for more information and documentation.""",
     author='Mathias Ertl',
     author_email='mati@er.tl',
     url=url,
