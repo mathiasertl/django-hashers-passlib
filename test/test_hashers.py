@@ -82,7 +82,7 @@ class TestMixin(object):
                 self.assertEqual(encoded, back)
 
     def test_user_model(self):
-        password = 'foobar-random-example'
+        password = 'foobar-random'
         user = User.objects.create(username='foobar')
 
         with self.settings(PASSWORD_HASHERS=[self.path, ]):
