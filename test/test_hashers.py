@@ -18,13 +18,7 @@
 
 from __future__ import unicode_literals
 
-import os
-import sys
-
 from collections import OrderedDict
-
-sys.path.insert(0, 'example')
-os.environ['DJANGO_SETTINGS_MODULE'] = 'example.settings'
 
 from passlib import hash
 

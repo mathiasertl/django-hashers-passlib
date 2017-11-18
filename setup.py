@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License along with django-hashers-passlib. If not,
 # see <http://www.gnu.org/licenses/>.
 
+import os
 import subprocess
 import sys
 import unittest
@@ -80,6 +81,7 @@ class test(Command):
         pass
 
     def run(self):
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'test.django_settings')
         from test import test_hashers
 
         loader = unittest.TestLoader()
