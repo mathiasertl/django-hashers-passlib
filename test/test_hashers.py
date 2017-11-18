@@ -16,8 +16,12 @@
 from __future__ import unicode_literals
 
 from collections import OrderedDict
+from unittest import skipUnless
 
+import passlib
 from passlib import hash
+from pkg_resources import parse_version
+from pkg_resources import SetuptoolsVersion
 
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.hashers import make_password
@@ -229,6 +233,18 @@ class hex_sha256_test(TestCase, TestMixin):
 
 class hex_sha512_test(TestCase, TestMixin):
     hasher = hashers_passlib.hex_sha512()
+
+
+@skipUnless(parse_version(passlib.__version__) >= SetuptoolsVersion('1.7'),
+            'argon2 is not supported in passlib 1.6')
+class argon2_test(TestConverterMixin, TestCase):
+    hasher = hashers_passlib.argon2()
+
+
+@skipUnless(parse_version(passlib.__version__) >= SetuptoolsVersion('1.7'),
+            'scrypt is not supported in passlib 1.6')
+class scrypt_test(TestCase, TestMixin):
+    hasher = hashers_passlib.argon2()
 
 
 class bcrypt_test(TestConverterMixin, TestCase):
