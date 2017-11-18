@@ -26,7 +26,7 @@ Getting started
 
 This module supports almost every hash supported by passlib (some must be converted at first - see below). If
 you want your Django project app to understand hashes provided by passlib, simply add the hashers to the
-(PASSWORD_HASHERS)[https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-PASSWORD_HASHERS] setting.
+[PASSWORD_HASHERS](https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-PASSWORD_HASHERS) setting.
 Note that the first value is the default hasher, so if you want to store new user passwords in one of these
 hashes, prepend the hash to the list:
 
@@ -39,11 +39,11 @@ PASSWORD_HASHERS = [
     # ... other Django hashers
 
     # We also want to add some users from say mssql2000 (who wouldn't?)
-    'hashers_passlib.mssql2000'
+    'hashers_passlib.mssql2000',
 ]
 ```
 
-Every module in passlib has hasher with the same name.
+Almost every module in passlib has hasher with the same name, see "Supported hashes" below for full list.
 
 Import/Export
 -------------
@@ -144,9 +144,11 @@ The following algorithms are supported:
 [nthash](https://pythonhosted.org/passlib/lib/passlib.hash.nthash.html),
 [cisco_pix](https://pythonhosted.org/passlib/lib/passlib.hash.cisco_pix.html),
 [cisco_type7](https://pythonhosted.org/passlib/lib/passlib.hash.cisco_type7.html),
-[grub_pbkdf2_sha512](https://pythonhosted.org/passlib/lib/passlib.hash.grub_pbkdf2_sha512.html)
+[grub_pbkdf2_sha512](https://pythonhosted.org/passlib/lib/passlib.hash.grub_pbkdf2_sha512.html),
+[hex_{md4,sha256,sha512}](https://pythonhosted.org/passlib/lib/passlib.hash.hex_digests.html),
+[argon2](https://passlib.readthedocs.io/en/stable/lib/passlib.hash.argon2.html),
 and
-[hex_{md4,sha256,sha512}](https://pythonhosted.org/passlib/lib/passlib.hash.hex_digests.html).
+[scrypt](https://passlib.readthedocs.io/en/stable/lib/passlib.hash.scrypt.html)
 
 Most hashes will be saved with a simple prefix `<algorithm>$`, where "&lt;algorithm&gt;" is the name of the
 hasher. The only exception are a few hashes (`apr_md5_crypt`, `bcrypt_sha256`, `pbkdf2_<digest>`, `scram`)
