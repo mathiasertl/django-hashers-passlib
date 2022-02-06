@@ -18,10 +18,8 @@
 # pylint: disable=invalid-name  # class names usually match the hash algorithm name.
 
 
-from base64 import b64decode
-from base64 import b64encode
-from binascii import hexlify
-from binascii import unhexlify
+from base64 import b64decode, b64encode
+from binascii import hexlify, unhexlify
 
 
 class Converter:

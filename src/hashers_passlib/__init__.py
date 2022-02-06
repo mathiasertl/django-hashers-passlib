@@ -18,9 +18,9 @@
 # pylint: disable=invalid-name  # class names follow their passlib counterparts
 
 from collections import OrderedDict
+
 from django.conf import settings
-from django.contrib.auth.hashers import BasePasswordHasher
-from django.contrib.auth.hashers import mask_hash
+from django.contrib.auth.hashers import BasePasswordHasher, mask_hash
 from django.utils.translation import gettext_noop as _
 
 _SETTINGS_MAPPING = (
