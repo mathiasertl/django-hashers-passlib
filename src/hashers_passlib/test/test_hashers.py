@@ -16,12 +16,8 @@
 from __future__ import unicode_literals
 
 from collections import OrderedDict
-from unittest import skipUnless
 
-import passlib
 from passlib import hash
-from pkg_resources import parse_version
-from pkg_resources import SetuptoolsVersion
 
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.hashers import make_password
@@ -33,13 +29,13 @@ from hashers_passlib import converters
 
 
 PASSWORDS = [
-    'I',
-    'DA',
-    'RoJ',
-    'THxn',
-    '1uzPU',
-    'oe331f',
-    'qBcP47',
+    "I",
+    "DA",
+    "RoJ",
+    "THxn",
+    "1uzPU",
+    "oe331f",
+    "qBcP47",
     # 'D4i19w',
     # 'e8qBbIA',
     # 'vzCXzq8',
@@ -54,10 +50,10 @@ PASSWORDS = [
 ]
 
 
-class TestMixin(object):
+class TestMixin:
     @property
     def path(self):
-        return '%s.%s' % (self.hasher.__module__, self.hasher.__class__.__name__)
+        return "%s.%s" % (self.hasher.__module__, self.hasher.__class__.__name__)
 
     def assertSummary(self, encoded):
         # test safe_summary():
@@ -67,7 +63,11 @@ class TestMixin(object):
         self.assertTrue(len(summary) >= 1)
 
     def test_check(self):
-        with self.settings(PASSWORD_HASHERS=[self.path, ]):
+        with self.settings(
+            PASSWORD_HASHERS=[
+                self.path,
+            ]
+        ):
             for password in PASSWORDS:
                 encoded = make_password(password)
                 self.assertTrue(check_password(password, encoded))
@@ -82,19 +82,23 @@ class TestMixin(object):
                 self.assertEqual(encoded, back)
 
     def test_user_model(self):
-        password = 'foobar-random'
-        user = User.objects.create(username='foobar')
+        password = "foobar-random"
+        user = User.objects.create(username="foobar")
 
-        with self.settings(PASSWORD_HASHERS=[self.path, ]):
+        with self.settings(PASSWORD_HASHERS=[self.path]):
             user.set_password(password)
+            print(user.password)
             user.save()
 
             self.assertTrue(user.check_password(password))
 
-        # this is False because no hasher is available
-        self.assertFalse(user.check_password(password))
+        # this is False because no hasher recognizes the format
+        with self.settings(
+            PASSWORD_HASHERS=["django.contrib.auth.hashers.PBKDF2PasswordHasher"]
+        ):
+            self.assertFalse(user.check_password(password))
 
-        with self.settings(PASSWORD_HASHERS=[self.path, ]):
+        with self.settings(PASSWORD_HASHERS=[self.path]):
             self.assertTrue(user.check_password(password))
 
 
@@ -103,7 +107,11 @@ class TestConverterMixin(object):
         self.alt_hasher = getattr(hash, self.converter.__class__.__name__)
 
     def test_base(self):
-        with self.settings(PASSWORD_HASHERS=[self.hasher, ]):
+        with self.settings(
+            PASSWORD_HASHERS=[
+                self.hasher,
+            ]
+        ):
             for password in PASSWORDS:
                 orig = self.alt_hasher.encrypt(password)
                 conv = self.converter.from_orig(orig)
@@ -172,21 +180,26 @@ class pbkdf2_sha256_test(TestCase, TestMixin):
     hasher = hashers_passlib.pbkdf2_sha256()
 
     def test_settings(self):
-        encoded = self.hasher.encode('foobar', rounds=32)
-        self.assertEqual(self.hasher.safe_summary(encoded)['iterations'], 32)
+        encoded = self.hasher.encode("foobar", rounds=32)
+        self.assertEqual(self.hasher.safe_summary(encoded)["iterations"], 32)
 
-        encoded = self.hasher.encode('foobar', rounds=64)
-        self.assertEqual(self.hasher.safe_summary(encoded)['iterations'], 64)
+        encoded = self.hasher.encode("foobar", rounds=64)
+        self.assertEqual(self.hasher.safe_summary(encoded)["iterations"], 64)
 
         kwargs = {
-            'pbkdf2_sha256': {
-                'rounds': 64,
+            "pbkdf2_sha256": {
+                "rounds": 64,
             },
         }
 
-        with self.settings(PASSWORD_HASHERS=[self.path, ], PASSLIB_KEYWORDS=kwargs):
-            encoded = self.hasher.encode('foobar')
-        self.assertEqual(self.hasher.safe_summary(encoded)['iterations'], 64)
+        with self.settings(
+            PASSWORD_HASHERS=[
+                self.path,
+            ],
+            PASSLIB_KEYWORDS=kwargs,
+        ):
+            encoded = self.hasher.encode("foobar")
+        self.assertEqual(self.hasher.safe_summary(encoded)["iterations"], 64)
 
 
 class pbkdf2_sha512_test(TestCase, TestMixin):
@@ -273,8 +286,6 @@ class hex_sha512_test(TestCase, TestMixin):
     hasher = hashers_passlib.hex_sha512()
 
 
-@skipUnless(parse_version(passlib.__version__) >= SetuptoolsVersion('1.7'),
-            'argon2 is not supported in passlib<<1.7')
 class argon2i_test(TestCase, TestMixin):
     hasher = hashers_passlib.argon2i()
 
@@ -283,87 +294,85 @@ class argon2i_test(TestCase, TestMixin):
         pass
 
 
-@skipUnless(parse_version(passlib.__version__) >= SetuptoolsVersion('1.7'),
-            'scrypt is not supported in passlib<<1.7')
 class scrypt_test(TestCase, TestMixin):
     hasher = hashers_passlib.scrypt()
 
 
 class bcrypt_test(TestConverterMixin, TestCase):
-    hasher = 'django.contrib.auth.hashers.BCryptPasswordHasher'
+    hasher = "django.contrib.auth.hashers.BCryptPasswordHasher"
     converter = converters.bcrypt()
 
 
 class bsd_nthash_test(TestConverterMixin, TestCase):
-    hasher = 'hashers_passlib.nthash'
+    hasher = "hashers_passlib.nthash"
     converter = converters.bsd_nthash()
 
 
 class ldap_md5_test(TestConverterMixin, TestCase):
-    hasher = 'django.contrib.auth.hashers.UnsaltedMD5PasswordHasher'
+    hasher = "django.contrib.auth.hashers.UnsaltedMD5PasswordHasher"
     converter = converters.ldap_md5()
 
 
 class ldap_sha1_test(TestConverterMixin, TestCase):
-    hasher = 'django.contrib.auth.hashers.UnsaltedSHA1PasswordHasher'
+    hasher = "django.contrib.auth.hashers.UnsaltedSHA1PasswordHasher"
     converter = converters.ldap_sha1()
 
 
 class ldap_hex_md5_test(TestConverterMixin, TestCase):
-    hasher = 'django.contrib.auth.hashers.UnsaltedMD5PasswordHasher'
+    hasher = "django.contrib.auth.hashers.UnsaltedMD5PasswordHasher"
     converter = converters.ldap_hex_md5()
 
 
 class ldap_hex_sha1_test(TestConverterMixin, TestCase):
-    hasher = 'django.contrib.auth.hashers.UnsaltedSHA1PasswordHasher'
+    hasher = "django.contrib.auth.hashers.UnsaltedSHA1PasswordHasher"
     converter = converters.ldap_hex_sha1()
 
 
 class ldap_des_crypt_test(TestConverterMixin, TestCase):
-    hasher = 'hashers_passlib.des_crypt'
+    hasher = "hashers_passlib.des_crypt"
     converter = converters.ldap_des_crypt()
 
 
 class ldap_bsdi_crypt_test(TestConverterMixin, TestCase):
-    hasher = 'hashers_passlib.bsdi_crypt'
+    hasher = "hashers_passlib.bsdi_crypt"
     converter = converters.ldap_bsdi_crypt()
 
 
 class ldap_md5_crypt_test(TestConverterMixin, TestCase):
-    hasher = 'hashers_passlib.md5_crypt'
+    hasher = "hashers_passlib.md5_crypt"
     converter = converters.ldap_md5_crypt()
 
 
 class ldap_bcrypt_test(TestConverterMixin, TestCase):
-    hasher = 'django.contrib.auth.hashers.BCryptPasswordHasher'
+    hasher = "django.contrib.auth.hashers.BCryptPasswordHasher"
     converter = converters.ldap_bcrypt()
 
 
 class ldap_sha1_crypt_test(TestConverterMixin, TestCase):
-    hasher = 'hashers_passlib.sha1_crypt'
+    hasher = "hashers_passlib.sha1_crypt"
     converter = converters.ldap_sha1_crypt()
 
 
 class ldap_sha256_crypt_test(TestConverterMixin, TestCase):
-    hasher = 'hashers_passlib.sha256_crypt'
+    hasher = "hashers_passlib.sha256_crypt"
     converter = converters.ldap_sha256_crypt()
 
 
 class ldap_sha512_crypt_test(TestConverterMixin, TestCase):
-    hasher = 'hashers_passlib.sha512_crypt'
+    hasher = "hashers_passlib.sha512_crypt"
     converter = converters.ldap_sha512_crypt()
 
 
 class ldap_pbkdf2_sha1_test(TestConverterMixin, TestCase):
-    hasher = 'hashers_passlib.pbkdf2_sha1'
+    hasher = "hashers_passlib.pbkdf2_sha1"
     converter = converters.ldap_pbkdf2_sha1()
 
 
 class ldap_pbkdf2_sha256_test(TestConverterMixin, TestCase):
-    hasher = 'hashers_passlib.pbkdf2_sha256'
+    hasher = "hashers_passlib.pbkdf2_sha256"
     converter = converters.ldap_pbkdf2_sha256()
 
 
 class ldap_pbkdf2_sha512_test(TestConverterMixin, TestCase):
-    hasher = 'hashers_passlib.pbkdf2_sha512'
+    hasher = "hashers_passlib.pbkdf2_sha512"
     converter = converters.ldap_pbkdf2_sha512()
