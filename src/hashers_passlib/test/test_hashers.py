@@ -16,17 +16,14 @@
 from __future__ import unicode_literals
 
 from collections import OrderedDict
-
-from passlib import hash
-
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.test import TestCase
+from passlib import hash
 
 import hashers_passlib
 from hashers_passlib import converters
-
 
 PASSWORDS = [
     "I",

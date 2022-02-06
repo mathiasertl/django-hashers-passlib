@@ -16,7 +16,6 @@
 import os
 import subprocess
 import sys
-
 from setuptools import Command
 from setuptools import setup
 
