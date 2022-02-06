@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License along with django-hashers-passlib. If not,
 # see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+# pylint: disable=invalid-name  # class names follow their passlib counterparts
 
 from collections import OrderedDict
 from django.conf import settings

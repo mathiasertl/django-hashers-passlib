@@ -13,14 +13,17 @@
 # You should have received a copy of the GNU General Public License along with django-hashers-passlib. If not,
 # see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+"""Test for all hasher classes."""
+
+# pylint: disable=missing-class-docstring,invalid-name
 
 from collections import OrderedDict
+
+import passlib
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.test import TestCase
-from passlib import hash
 
 import hashers_passlib
 from hashers_passlib import converters
@@ -50,21 +53,18 @@ PASSWORDS = [
 class TestMixin:
     @property
     def path(self):
-        return "%s.%s" % (self.hasher.__module__, self.hasher.__class__.__name__)
+        """Shortcut for getting the  full classpath to the hasher."""
+        return f"{self.hasher.__module__}.{self.hasher.__class__.__name__}"
 
     def assertSummary(self, encoded):
-        # test safe_summary():
-        #   in a separate function because passlib.hash.argon2i has a bug here.
+        """Assert that the summary is as expected."""
         summary = self.hasher.safe_summary(encoded)
         self.assertTrue(isinstance(summary, OrderedDict))
         self.assertTrue(len(summary) >= 1)
 
     def test_check(self):
-        with self.settings(
-            PASSWORD_HASHERS=[
-                self.path,
-            ]
-        ):
+        """Test creating passwords and checking them again using our hashes."""
+        with self.settings(PASSWORD_HASHERS=[self.path]):
             for password in PASSWORDS:
                 encoded = make_password(password)
                 self.assertTrue(check_password(password, encoded))
@@ -79,6 +79,7 @@ class TestMixin:
                 self.assertEqual(encoded, back)
 
     def test_user_model(self):
+        """Test the django user password."""
         password = "foobar-random"
         user = User.objects.create(username="foobar")
 
@@ -96,16 +97,13 @@ class TestMixin:
             self.assertTrue(user.check_password(password))
 
 
-class TestConverterMixin(object):
-    def setUp(self):
-        self.alt_hasher = getattr(hash, self.converter.__class__.__name__)
+class TestConverterMixin:
+    def setUp(self):  # pylint: disable=missing-function-docstring
+        self.alt_hasher = getattr(passlib.hash, self.converter.__class__.__name__)
 
     def test_base(self):
-        with self.settings(
-            PASSWORD_HASHERS=[
-                self.hasher,
-            ]
-        ):
+        """Basic test for converters."""
+        with self.settings(PASSWORD_HASHERS=[self.hasher]):
             for password in PASSWORDS:
                 orig = self.alt_hasher.encrypt(password)
                 conv = self.converter.from_orig(orig)
@@ -174,24 +172,16 @@ class pbkdf2_sha256_test(TestCase, TestMixin):
     hasher = hashers_passlib.pbkdf2_sha256()
 
     def test_settings(self):
+        """Test passing additional kwargs to the hasher."""
         encoded = self.hasher.encode("foobar", rounds=32)
         self.assertEqual(self.hasher.safe_summary(encoded)["iterations"], 32)
 
         encoded = self.hasher.encode("foobar", rounds=64)
         self.assertEqual(self.hasher.safe_summary(encoded)["iterations"], 64)
 
-        kwargs = {
-            "pbkdf2_sha256": {
-                "rounds": 64,
-            },
-        }
+        kwargs = {"pbkdf2_sha256": {"rounds": 64}}
 
-        with self.settings(
-            PASSWORD_HASHERS=[
-                self.path,
-            ],
-            PASSLIB_KEYWORDS=kwargs,
-        ):
+        with self.settings(PASSWORD_HASHERS=[self.path], PASSLIB_KEYWORDS=kwargs):
             encoded = self.hasher.encode("foobar")
         self.assertEqual(self.hasher.safe_summary(encoded)["iterations"], 64)
 

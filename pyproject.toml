@@ -6,3 +6,6 @@ exclude = "migrations"
 profile = "black"
 line_length = 110
 skip = ["migrations"]
+
+[tool.pylint.format]
+max-line-length = 110
