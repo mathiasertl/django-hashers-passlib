@@ -93,9 +93,7 @@ class TestMixin:
             self.assertTrue(user.check_password(password))
 
         # this is False because no hasher recognizes the format
-        with self.settings(
-            PASSWORD_HASHERS=["django.contrib.auth.hashers.PBKDF2PasswordHasher"]
-        ):
+        with self.settings(PASSWORD_HASHERS=["django.contrib.auth.hashers.PBKDF2PasswordHasher"]):
             self.assertFalse(user.check_password(password))
 
         with self.settings(PASSWORD_HASHERS=[self.path]):

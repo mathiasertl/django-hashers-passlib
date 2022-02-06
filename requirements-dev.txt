@@ -1,5 +1,4 @@
 -r requirements-lint.txt
-argon2-cffi==16.3.0
-scrypt==0.8.0
+-r requirements-test.txt
 wheel==0.30.0
 tox==3.24.5

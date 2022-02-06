@@ -20,12 +20,12 @@ import sys
 from setuptools import Command
 from setuptools import setup
 
-name = 'django-hashers-passlib'
-url = 'https://github.com/mathiasertl/django-hashers-passlib'
-LATEST_RELEASE = '0.4'
+name = "django-hashers-passlib"
+url = "https://github.com/mathiasertl/django-hashers-passlib"
+LATEST_RELEASE = "0.4"
 requires = [
-    'passlib>=1.6.5',
-    'Django>=1.8',
+    "passlib>=1.6.5",
+    "Django>=1.8",
 ]
 
 
@@ -44,7 +44,7 @@ class version(Command):
 
 
 class style(Command):
-    descriptions = 'Run syntax and style checks.'
+    descriptions = "Run syntax and style checks."
     user_options = []
 
     def initialize_options(self):
@@ -54,23 +54,23 @@ class style(Command):
         pass
 
     def run(self):
-        flake = ['flake8', 'setup.py', 'hashers_passlib/']
-        print(' '.join(flake))
+        flake = ["flake8", "setup.py", "hashers_passlib/"]
+        print(" ".join(flake))
         code = subprocess.call(flake)
         if code != 0:
             sys.exit(code)
 
-        isort = ['isort', '--check-only', '--diff', '-rc', 'setup.py', 'hashers_passlib/']
-        print(' '.join(isort))
+        isort = ["isort", "--check-only", "--diff", "-rc", "setup.py", "hashers_passlib/"]
+        print(" ".join(isort))
         code = subprocess.call(isort)
         if code != 0:
             sys.exit(code)
 
 
 class test(Command):
-    description = 'Run test suite.'
+    description = "Run test suite."
     user_options = [
-        (str('algo='), None, 'Only test the specified algorithm'),
+        (str("algo="), None, "Only test the specified algorithm"),
     ]
 
     def initialize_options(self):
@@ -80,38 +80,40 @@ class test(Command):
         pass
 
     def run(self):
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'test.django_settings')
-        #sys.path.insert(0, '.')
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "test.django_settings")
+        # sys.path.insert(0, '.')
         import django
+
         django.setup()
 
         from django.core.management import call_command
-        suite = 'test'
-        if self.algo is not None:
-            suite = 'test.test_hashers.%s_test' % self.algo
 
-        call_command('test', suite)
+        suite = "test"
+        if self.algo is not None:
+            suite = "test.test_hashers.%s_test" % self.algo
+
+        call_command("test", suite)
 
 
 setup(
     name=name,
     version=LATEST_RELEASE,
-    description='Django hashers using passlib',
+    description="Django hashers using passlib",
     long_description="""This library provides password hashers for the hash schemes provided by passlib for
 Djangos password hashing framework. Unlike passlibs ``passlib.apps.django``, it does not replace Djangos
 password hashing framework but adds additional hashers to its built in framework.
 
 Please see https://github.com/mathiasertl/django-hashers-passlib for more information and documentation.""",
-    author='Mathias Ertl',
-    author_email='mati@er.tl',
+    author="Mathias Ertl",
+    author_email="mati@er.tl",
     url=url,
     packages=[
-        'hashers_passlib',
+        "hashers_passlib",
     ],
     cmdclass={
-        'style': style,
-        'test': test,
-        'version': version,
+        "style": style,
+        "test": test,
+        "version": version,
     },
     license="GNU General Public License (GPL) v3",
     install_requires=requires,
@@ -132,5 +134,5 @@ Please see https://github.com/mathiasertl/django-hashers-passlib for more inform
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: System :: Systems Administration :: Authentication/Directory",
-    ]
+    ],
 )

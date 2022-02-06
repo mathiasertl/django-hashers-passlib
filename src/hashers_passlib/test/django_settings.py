@@ -1,16 +1,16 @@
 # Basic django settings
 
 DEBUG = True
-SECRET_KEY = 'dummy'
+SECRET_KEY = "dummy"
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": ":memory:",
     }
 }
 
 INSTALLED_APPS = [
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
 ]

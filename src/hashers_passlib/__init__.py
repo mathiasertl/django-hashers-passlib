@@ -23,16 +23,19 @@ from django.contrib.auth.hashers import mask_hash
 from django.utils.translation import gettext_noop as _
 
 _SETTINGS_MAPPING = (
-    (_('rounds'), 'iterations', False),
-    (_('salt'), 'salt', 2),
-    (_('checksum'), 'hash', 6),
+    (_("rounds"), "iterations", False),
+    (_("salt"), "salt", 2),
+    (_("checksum"), "hash", 6),
 )
 
-VERSION = (0, 4, )
+VERSION = (
+    0,
+    4,
+)
 
 
 def get_version():
-    return '.'.join([str(t) for t in VERSION])
+    return ".".join([str(t) for t in VERSION])
 
 
 class PasslibHasher(BasePasswordHasher):
@@ -69,11 +72,11 @@ class PasslibHasher(BasePasswordHasher):
 
     def encode(self, password, salt=None, **kwargs):
         if salt is not None:
-            kwargs['salt'] = salt
+            kwargs["salt"] = salt
 
-        kwargs.update(getattr(settings, 'PASSLIB_KEYWORDS', {}).get(self.hasher.name, {}))
+        kwargs.update(getattr(settings, "PASSLIB_KEYWORDS", {}).get(self.hasher.name, {}))
 
-        if hasattr(self.hasher, 'using'):
+        if hasattr(self.hasher, "using"):
             encoded = self.hasher.using(**kwargs).encrypt(password)
         else:  # passlib 1.6 does not have 'using'
             encoded = self.hasher.encrypt(password, **kwargs)
@@ -81,16 +84,18 @@ class PasslibHasher(BasePasswordHasher):
         return self.from_orig(encoded)
 
     def from_orig(self, hash):
-        return '%s$%s' % (self.algorithm, hash)
+        return "%s$%s" % (self.algorithm, hash)
 
     def to_orig(self, hash):
-        return hash.split('$', 1)[1]
+        return hash.split("$", 1)[1]
 
     def safe_summary(self, encoded):
-        algorithm, hash = encoded.split('$', 1)
+        algorithm, hash = encoded.split("$", 1)
         assert algorithm == self.algorithm
 
-        data = [(_('algorithm'), algorithm), ]
+        data = [
+            (_("algorithm"), algorithm),
+        ]
         to_append = []
 
         parsed = self.hasher.parsehash(self.to_orig(encoded))
@@ -106,7 +111,7 @@ class PasslibHasher(BasePasswordHasher):
                         value = mask_hash(str(value), show=mask)
                     except UnicodeDecodeError:
                         # Thrown if non-ascii bytes are in the hash
-                        value = '%s%s' % ('?' * mask, '*' * (len(value) - mask))
+                        value = "%s%s" % ("?" * mask, "*" * (len(value) - mask))
 
                 to_append.append((mapping, value))
 
@@ -119,10 +124,10 @@ class PasslibHasher(BasePasswordHasher):
 
 class PasslibCryptSchemeHasher(PasslibHasher):
     def from_orig(self, encrypted):
-        return encrypted.lstrip('$')
+        return encrypted.lstrip("$")
 
     def to_orig(self, encoded):
-        return '$%s' % encoded
+        return "$%s" % encoded
 
 
 ########################
@@ -171,13 +176,13 @@ class sha512_crypt(PasslibHasher):
 # Other Modular Crypt Schemes #
 ###############################
 class apr_md5_crypt(PasslibCryptSchemeHasher):
-    handler = 'apr_md5_crypt'
-    algorithm = 'apr1'
+    handler = "apr_md5_crypt"
+    algorithm = "apr1"
 
 
 class bcrypt_sha256(PasslibCryptSchemeHasher):
-    handler = 'bcrypt_sha256'
-    algorithm = 'bcrypt-sha256'
+    handler = "bcrypt_sha256"
+    algorithm = "bcrypt-sha256"
 
 
 class phpass(PasslibHasher):
@@ -185,18 +190,18 @@ class phpass(PasslibHasher):
 
 
 class pbkdf2_sha1(PasslibCryptSchemeHasher):
-    handler = 'pbkdf2_sha1'
-    algorithm = 'pbkdf2'
+    handler = "pbkdf2_sha1"
+    algorithm = "pbkdf2"
 
 
 class pbkdf2_sha256(PasslibCryptSchemeHasher):
-    handler = 'pbkdf2_sha256'
-    algorithm = 'pbkdf2-sha256'
+    handler = "pbkdf2_sha256"
+    algorithm = "pbkdf2-sha256"
 
 
 class pbkdf2_sha512(PasslibCryptSchemeHasher):
-    handler = 'pbkdf2_sha512'
-    algorithm = 'pbkdf2-sha512'
+    handler = "pbkdf2_sha512"
+    algorithm = "pbkdf2-sha512"
 
 
 class cta_pbkdf2_sha1(PasslibHasher):
@@ -236,12 +241,14 @@ class ldap_salted_sha1(PasslibHasher):
 # ldap_hex_sha1 is provided by a converter
 # ldap_pbkdf2_{digest} is provided by a converter
 
+
 class atlassian_pbkdf2_sha1(PasslibHasher):
     pass
 
 
 class fshp(PasslibHasher):
     pass
+
 
 # roundup_plaintext makes no sense to support
 
@@ -264,6 +271,7 @@ class mysql323(PasslibHasher):
 class mysql41(PasslibHasher):
     pass
 
+
 # postgres_md5 is incompatible (requires username for hash)
 # oracle10 is incompatible (requires username for hash)
 
@@ -282,6 +290,7 @@ class lmhash(PasslibHasher):
 class nthash(PasslibHasher):
     pass
 
+
 # msdcc is incompatible (requires username for hash)
 # msdcc2 is incompatible (requires username for hash)
 
@@ -296,6 +305,7 @@ class cisco_pix(PasslibHasher):
 class cisco_type7(PasslibHasher):
     pass
 
+
 # django_{digest} not supported, for obvious reasons
 
 
@@ -305,6 +315,7 @@ class grub_pbkdf2_sha512(PasslibHasher):
 
 class hex_md4(PasslibHasher):
     pass
+
 
 # hex_md5 is already supported by Django
 # hex_sha1 is already supported by Django
@@ -322,6 +333,7 @@ class hex_sha512(PasslibHasher):
 # Hashers added in 1.7.1 #
 ##########################
 
+
 class argon2i(PasslibCryptSchemeHasher):
     """
 
@@ -331,8 +343,9 @@ class argon2i(PasslibCryptSchemeHasher):
 
     .. versionadded:: 0.4
     """
-    handler = 'argon2'
-    algorithm = 'argon2i'
+
+    handler = "argon2"
+    algorithm = "argon2i"
 
 
 class scrypt(PasslibCryptSchemeHasher):
@@ -344,4 +357,5 @@ class scrypt(PasslibCryptSchemeHasher):
 
     .. versionadded:: 0.4
     """
+
     pass
