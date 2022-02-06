@@ -2,6 +2,8 @@
 
 * Add support for Django 3.2 and Django 4.0.
 * Drop support for long out-of-date Django versions 1.8, 1.10 and 1.11.
+* Add `argon2d` and `argon2id` hashers. We recommend that you add all argon2
+  hashers if needed.
 
 0.4 (19 November 2017)
 

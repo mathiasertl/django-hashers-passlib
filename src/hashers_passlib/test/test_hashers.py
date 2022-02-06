@@ -87,7 +87,6 @@ class TestMixin:
 
         with self.settings(PASSWORD_HASHERS=[self.path]):
             user.set_password(password)
-            print(user.password)
             user.save()
 
             self.assertTrue(user.check_password(password))
@@ -284,12 +283,16 @@ class hex_sha512_test(TestCase, TestMixin):
     hasher = hashers_passlib.hex_sha512()
 
 
+class argon2d_test(TestCase, TestMixin):
+    hasher = hashers_passlib.argon2d()
+
+
 class argon2i_test(TestCase, TestMixin):
     hasher = hashers_passlib.argon2i()
 
-    def assertSummary(self, encoded):
-        # https://bitbucket.org/ecollins/passlib/issues/97/argon2parsehash-no-attribute-salt_len
-        pass
+
+class argon2id_test(TestCase, TestMixin):
+    hasher = hashers_passlib.argon2id()
 
 
 class scrypt_test(TestCase, TestMixin):

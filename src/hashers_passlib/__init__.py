@@ -43,6 +43,7 @@ class PasslibHasher(BasePasswordHasher):
 
     library = "passlib.hash"
     handler = None
+    using = {}
     _hasher = None
     _algorithm = None
 
@@ -71,15 +72,14 @@ class PasslibHasher(BasePasswordHasher):
         return self.hasher.verify(password, self.to_orig(encoded))
 
     def encode(self, password, salt=None, **kwargs):
+        using = dict(self.using)
+
         if salt is not None:
-            kwargs["salt"] = salt
+            using["salt"] = salt
 
-        kwargs.update(getattr(settings, "PASSLIB_KEYWORDS", {}).get(self.hasher.name, {}))
-
-        if hasattr(self.hasher, "using"):
-            encoded = self.hasher.using(**kwargs).encrypt(password)
-        else:  # passlib 1.6 does not have 'using'
-            encoded = self.hasher.encrypt(password, **kwargs)
+        using.update(getattr(settings, "PASSLIB_KEYWORDS", {}).get(self.hasher.name, {}))
+        using.update(kwargs)
+        encoded = self.hasher.using(**using).encrypt(password)
 
         return self.from_orig(encoded)
 
@@ -346,6 +346,7 @@ class argon2i(PasslibCryptSchemeHasher):
 
     handler = "argon2"
     algorithm = "argon2i"
+    using = {"type": "I"}
 
 
 class scrypt(PasslibCryptSchemeHasher):
@@ -359,3 +360,34 @@ class scrypt(PasslibCryptSchemeHasher):
     """
 
     pass
+
+
+##########################
+# Hashers added in 1.7.2 #
+##########################
+class argon2d(argon2i):
+    """
+
+    This hasher requires that you install the ``argon-cffi`` package.
+
+    .. seealso:: https://passlib.readthedocs.io/en/stable/lib/passlib.hash.argon2.html
+
+    .. versionadded:: 0.4
+    """
+
+    using = {"type": "D"}
+    algorithm = "argon2d"
+
+
+class argon2id(argon2i):
+    """
+
+    This hasher requires that you install the ``argon-cffi`` package.
+
+    .. seealso:: https://passlib.readthedocs.io/en/stable/lib/passlib.hash.argon2.html
+
+    .. versionadded:: 0.4
+    """
+
+    using = {"type": "ID"}
+    algorithm = "argon2id"
