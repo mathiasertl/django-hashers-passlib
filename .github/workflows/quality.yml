@@ -41,7 +41,7 @@ jobs:
           black --check src/
           pylint src/hashers_passlib
 
-      - name: Run lintersa
+      - name: Check wheel
         run: |
           pip install -r requirements-dist.txt
           python -m build
