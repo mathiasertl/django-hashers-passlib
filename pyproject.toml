@@ -9,3 +9,8 @@ skip = ["migrations"]
 
 [tool.pylint.format]
 max-line-length = 110
+
+[tool.pylint.messages_control]
+disable = [
+    "no-self-use",
+]

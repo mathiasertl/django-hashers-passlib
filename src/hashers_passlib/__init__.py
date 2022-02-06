@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License along with django-hashers-passlib. If not,
 # see <http://www.gnu.org/licenses/>.
 
+"""Collection of hashers based on passlib hashers."""
+
 # pylint: disable=invalid-name  # class names follow their passlib counterparts
 
 from collections import OrderedDict
@@ -27,13 +29,11 @@ _SETTINGS_MAPPING = (
     (_("checksum"), "hash", 6),
 )
 
-VERSION = (
-    0,
-    4,
-)
+VERSION = (0, 5, 0)
 
 
 def get_version():
+    """Get current version as string."""
     return ".".join([str(t) for t in VERSION])
 
 
@@ -52,17 +52,23 @@ class PasslibHasher(BasePasswordHasher):
 
     @property
     def algorithm(self):
+        """Get name of the algorithm as used in the Django database."""
         if self._algorithm is None:
             self._algorithm = self.__class__.__name__
         return self._algorithm
 
     def get_handler(self):
+        """Get the function name used by the hash algorithm.
+
+        This defaults to the name of the algorithm, but sometimes we need to override it.
+        """
         if self.handler is None:
             return self.algorithm
         return self.handler
 
     @property
     def hasher(self):
+        """Property to get the passlib hasher class."""
         if self._hasher is None:
             self._hasher = getattr(self._load_library(), self.get_handler())
         return self._hasher
@@ -82,14 +88,20 @@ class PasslibHasher(BasePasswordHasher):
 
         return self.from_orig(encoded)
 
-    def from_orig(self, hash):
-        return "%s$%s" % (self.algorithm, hash)
+    def decode(self, encoded):
+        algorithm, encoded = encoded.split("$", 1)
+        return {"algorithm": algorithm, "hash": encoded}
 
-    def to_orig(self, hash):
-        return hash.split("$", 1)[1]
+    def from_orig(self, encrypted):
+        """Convert haash to format as stored in the Django database."""
+        return f"{self.algorithm}${encrypted}"
+
+    def to_orig(self, encoded):
+        """Convert hash to format produced by passlib."""
+        return encoded.split("$", 1)[1]
 
     def safe_summary(self, encoded):
-        algorithm, hash = encoded.split("$", 1)
+        algorithm, _hash = encoded.split("$", 1)
         assert algorithm == self.algorithm
 
         data = [
@@ -110,6 +122,7 @@ class PasslibHasher(BasePasswordHasher):
                         value = mask_hash(str(value), show=mask)
                     except UnicodeDecodeError:
                         # Thrown if non-ascii bytes are in the hash
+                        # pylint: disable=consider-using-f-string
                         value = "%s%s" % ("?" * mask, "*" * (len(value) - mask))
 
                 to_append.append((mapping, value))
@@ -122,97 +135,109 @@ class PasslibHasher(BasePasswordHasher):
 
 
 class PasslibCryptSchemeHasher(PasslibHasher):
+    """Base class for hash algorithms where the passlib version of the hash just prepends a ``"$"``."""
+
     def from_orig(self, encrypted):
         return encrypted.lstrip("$")
 
     def to_orig(self, encoded):
-        return "$%s" % encoded
+        return f"${encoded}"
 
 
 ########################
 # Archaic Unix Schemes #
 ########################
 class des_crypt(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.des_crypt`."""
 
 
 class bsdi_crypt(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.bsdi_crypt`."""
 
 
 class bigcrypt(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.bigcrypt`."""
 
 
 class crypt16(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.crypt16`."""
 
 
 #########################
 # Standard Unix Schemes #
 #########################
 class md5_crypt(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.md5_crypt`."""
 
 
 class sha1_crypt(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.sha1_crypt`."""
 
 
 class sun_md5_crypt(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.sun_md5_crypt`."""
 
 
 class sha256_crypt(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.sha256_crypt`."""
 
 
 class sha512_crypt(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.sha512_crypt`."""
 
 
 ###############################
 # Other Modular Crypt Schemes #
 ###############################
 class apr_md5_crypt(PasslibCryptSchemeHasher):
+    """Hasher for :py:class:`passlib:passlib.hash.apr_md5_crypt`."""
+
     handler = "apr_md5_crypt"
     algorithm = "apr1"
 
 
 class bcrypt_sha256(PasslibCryptSchemeHasher):
+    """Hasher for :py:class:`passlib:passlib.hash.bcrypt_sha256`."""
+
     handler = "bcrypt_sha256"
     algorithm = "bcrypt-sha256"
 
 
 class phpass(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.phpass`."""
 
 
 class pbkdf2_sha1(PasslibCryptSchemeHasher):
+    """Hasher for :py:class:`passlib:passlib.hash.pbkdf2_sha1`."""
+
     handler = "pbkdf2_sha1"
     algorithm = "pbkdf2"
 
 
 class pbkdf2_sha256(PasslibCryptSchemeHasher):
+    """Hasher for :py:class:`passlib:passlib.hash.pbkdf2_sha256`."""
+
     handler = "pbkdf2_sha256"
     algorithm = "pbkdf2-sha256"
 
 
 class pbkdf2_sha512(PasslibCryptSchemeHasher):
+    """Hasher for :py:class:`passlib:passlib.hash.pbkdf2_sha512`."""
+
     handler = "pbkdf2_sha512"
     algorithm = "pbkdf2-sha512"
 
 
 class cta_pbkdf2_sha1(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.cta_pbkdf2_sha1`."""
 
 
 class dlitz_pbkdf2_sha1(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.dlitz_pbkdf2_sha1`."""
 
 
 class scram(PasslibCryptSchemeHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.scram`."""
 
 
 # bsd_nthash is provided by a converter
@@ -223,11 +248,11 @@ class scram(PasslibCryptSchemeHasher):
 # ldap_md5 is provided by a converter
 # ldap_sha1 is provided by a converter
 class ldap_salted_md5(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.ldap_salted_md5`."""
 
 
 class ldap_salted_sha1(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.ldap_salted_sha1`."""
 
 
 # ldap_{crypt} provided by a converter
@@ -242,11 +267,11 @@ class ldap_salted_sha1(PasslibHasher):
 
 
 class atlassian_pbkdf2_sha1(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.atlassian_pbkdf2_sha1`."""
 
 
 class fshp(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.fshp"""
 
 
 # roundup_plaintext makes no sense to support
@@ -256,19 +281,19 @@ class fshp(PasslibHasher):
 # SQL Database Hashes #
 #######################
 class mssql2000(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.mssql2000`."""
 
 
 class mssql2005(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.mssql2005`."""
 
 
 class mysql323(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.mysql323`."""
 
 
 class mysql41(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.mysql41`."""
 
 
 # postgres_md5 is incompatible (requires username for hash)
@@ -276,18 +301,18 @@ class mysql41(PasslibHasher):
 
 
 class oracle11(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.oracle11`."""
 
 
 #####################
 # MS Windows Hashes #
 #####################
 class lmhash(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.lmhash`."""
 
 
 class nthash(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.nthash`."""
 
 
 # msdcc is incompatible (requires username for hash)
@@ -298,22 +323,22 @@ class nthash(PasslibHasher):
 # Other hashes #
 ################
 class cisco_pix(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.cisco_pix`."""
 
 
 class cisco_type7(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.cisco_type7`."""
 
 
 # django_{digest} not supported, for obvious reasons
 
 
 class grub_pbkdf2_sha512(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.grub_pbkdf2_sha512`."""
 
 
 class hex_md4(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.hex_md4`."""
 
 
 # hex_md5 is already supported by Django
@@ -321,11 +346,11 @@ class hex_md4(PasslibHasher):
 
 
 class hex_sha256(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.hex_sha256`."""
 
 
 class hex_sha512(PasslibHasher):
-    pass
+    """Hasher for :py:class:`passlib:passlib.hash.hex_sha512`."""
 
 
 ##########################
@@ -357,8 +382,6 @@ class scrypt(PasslibCryptSchemeHasher):
 
     .. versionadded:: 0.4
     """
-
-    pass
 
 
 ##########################
