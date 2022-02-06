@@ -1,6 +1,6 @@
 # ChangeLog
 
-## 0.5.0 (TBR)
+## 1.0.0 (TBR)
 
 * Add support for Django 3.2 and Django 4.0.
 * Add support for Python 3.7 - 3.10.

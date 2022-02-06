@@ -29,7 +29,7 @@ _SETTINGS_MAPPING = (
     (_("checksum"), "hash", 6),
 )
 
-VERSION_STR = "0.5.0"
+VERSION_STR = "1.0.0"
 VERSION = tuple(VERSION_STR.split("."))
 
 
@@ -376,7 +376,7 @@ class scrypt(PasslibCryptSchemeHasher):
 
     .. seealso:: https://passlib.readthedocs.io/en/stable/lib/passlib.hash.scrypt.html
 
-    .. versionadded:: 0.4
+    .. versionadded:: 1.0.0
     """
 
 
@@ -384,13 +384,13 @@ class scrypt(PasslibCryptSchemeHasher):
 # Hashers added in 1.7.2 #
 ##########################
 class argon2d(argon2i):
-    """
+    """Same as :py:class:`~hashers_passlib.argon2i`, but using the ``D`` type.
 
     This hasher requires that you install the ``argon-cffi`` package.
 
     .. seealso:: https://passlib.readthedocs.io/en/stable/lib/passlib.hash.argon2.html
 
-    .. versionadded:: 0.4
+    .. versionadded:: 1.0.0
     """
 
     using = {"type": "D"}
@@ -398,13 +398,13 @@ class argon2d(argon2i):
 
 
 class argon2id(argon2i):
-    """
+    """Same as :py:class:`~hashers_passlib.argon2i`, but using the ``ID`` type.
 
     This hasher requires that you install the ``argon-cffi`` package.
 
     .. seealso:: https://passlib.readthedocs.io/en/stable/lib/passlib.hash.argon2.html
 
-    .. versionadded:: 0.4
+    .. versionadded:: 1.0.0
     """
 
     using = {"type": "ID"}
