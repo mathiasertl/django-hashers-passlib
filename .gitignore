@@ -2,6 +2,7 @@
 *.sw[a-z]
 /*.egg-info/
 /.python-version
+/.tox/
 /build/
 /dist/
 /example/

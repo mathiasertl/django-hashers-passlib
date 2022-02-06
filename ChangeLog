@@ -1,3 +1,8 @@
+0.5.0 (TBR)
+
+* Add support for Django 3.2 and Django 4.0.
+* Drop support for long out-of-date Django versions 1.8, 1.10 and 1.11.
+
 0.4 (19 November 2017)
 
 * Support passlib 1.7.
