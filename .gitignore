@@ -1,6 +1,6 @@
+*.egg-info/
 *.py[oc]
 *.sw[a-z]
-/*.egg-info/
 /.python-version
 /.tox/
 /build/

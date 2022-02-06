@@ -29,12 +29,8 @@ _SETTINGS_MAPPING = (
     (_("checksum"), "hash", 6),
 )
 
-VERSION = (0, 5, 0)
-
-
-def get_version():
-    """Get current version as string."""
-    return ".".join([str(t) for t in VERSION])
+VERSION_STR = "0.5.0"
+VERSION = tuple(VERSION_STR.split("."))
 
 
 class PasslibHasher(BasePasswordHasher):

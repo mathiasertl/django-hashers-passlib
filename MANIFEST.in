@@ -1,0 +1,2 @@
+recursive-exclude src/hashers_passlib/test *
+recursive-exclude src/src/ *

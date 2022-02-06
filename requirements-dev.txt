@@ -1,4 +1,4 @@
+-r requirements-dist.txt
 -r requirements-lint.txt
 -r requirements-test.txt
-wheel==0.30.0
 tox==3.24.5
