@@ -1,0 +1,43 @@
+name: Tests
+on:
+  push:
+  pull_request:
+  pull_request_target:
+
+jobs:
+
+  tests:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        python-version: [ "3.7", "3.8", "3.9", "3.10" ]
+        django-version: [ "3.2.11", "4.0.1" ]
+        passlib-version: [ "1.7.4" ]
+    name: Python ${{ matrix.python-version }}, Django ${{ matrix.django-version }}, passlib ${{ matrix.passlib-version }}
+    steps:
+      - name: Acquire sources
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2 
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: x64
+
+      - name: Apply caching of dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: os=${{ matrix.os }}-python=${{ matrix.python-version }}-pip-${{ hashFiles('**/requirements-*.txt') }}
+
+
+      - name: Install dependencies
+        run: |
+          pip install -U pip setuptools
+          pip install -r requirements.txt -r requirements/requirements-test.txt Django==${{ matrix.django-version }} passlib==${{ matrix.passlib-version }}
+
+      - name: Run tests
+        run: |
+          python src/manage.py test hashers_passlib
