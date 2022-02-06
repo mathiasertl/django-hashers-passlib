@@ -30,13 +30,13 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: os=${{ matrix.os }}-python=${{ matrix.python-version }}-pip-${{ hashFiles('**/requirements-*.txt') }}
+          key: os=${{ matrix.os }}-python=${{ matrix.python-version }}-pip-${{ hashFiles('requirements*.txt') }}
 
 
       - name: Install dependencies
         run: |
           pip install -U pip setuptools
-          pip install -r requirements.txt -r requirements/requirements-test.txt Django==${{ matrix.django-version }} passlib==${{ matrix.passlib-version }}
+          pip install -r requirements.txt -r requirements-test.txt Django==${{ matrix.django-version }} passlib==${{ matrix.passlib-version }}
 
       - name: Run tests
         run: |

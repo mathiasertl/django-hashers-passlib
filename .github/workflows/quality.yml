@@ -27,11 +27,12 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: pip-${{ hashFiles('**/requirements-*.txt') }}
+          key: pip-${{ hashFiles('requirements*.txt') }}
 
       - name: Install dependencies
         run: |
-          pip install -r requirements/requirements-lint.txt
+          pip install -U pip setuptools
+          pip install -r requirements-lint.txt
 
       - name: Run linters
         run: |
@@ -42,6 +43,6 @@ jobs:
 
       - name: Run lintersa
         run: |
-          pip install -r requirements/requirements-dist.txt
+          pip install -r requirements-dist.txt
           python -m build
           twine check --strict dist/*
